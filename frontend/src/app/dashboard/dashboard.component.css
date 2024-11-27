@@ -1,0 +1,22 @@
+.dashboard-card {
+  padding: 16px;
+  text-align: center;
+  border-radius: 8px;
+  color: white;
+}
+
+.members-card {
+  background-color: #4caf50; /* Green */
+}
+
+.events-card {
+  background-color: #2196f3; /* Blue */
+}
+
+.tools-card {
+  background-color: #ffc107; /* Amber */
+}
+
+.publications-card {
+  background-color: #ff5722; /* Deep Orange */
+}

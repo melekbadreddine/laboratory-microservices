@@ -1,0 +1,48 @@
+<div
+  fxLayout="row"
+  fxLayoutGap="16px"
+  fxLayoutAlign="space-around center"
+  fxFlexFill
+>
+  <mat-card fxFlex="25" class="dashboard-card members-card">
+    <mat-card-title>Members</mat-card-title>
+    <mat-card-subtitle>{{ Nb_members }}</mat-card-subtitle>
+  </mat-card>
+
+  <mat-card fxFlex="25" class="dashboard-card events-card">
+    <mat-card-title>Events</mat-card-title>
+    <mat-card-subtitle>{{ Nb_events }}</mat-card-subtitle>
+  </mat-card>
+
+  <mat-card fxFlex="25" class="dashboard-card tools-card">
+    <mat-card-title>Tools</mat-card-title>
+    <mat-card-subtitle>{{ Nb_tools }}</mat-card-subtitle>
+  </mat-card>
+
+  <mat-card fxFlex="25" class="dashboard-card publications-card">
+    <mat-card-title>Publications</mat-card-title>
+    <mat-card-subtitle>{{ Nb_publications }}</mat-card-subtitle>
+  </mat-card>
+</div>
+
+<div class="chart-wrapper">
+  <canvas
+    baseChart
+    [type]="'pie'"
+    [datasets]="chartData"
+    [labels]="chartLabels"
+    [options]="chartOptions"
+  >
+  </canvas>
+</div>
+
+<div class="chart-wrapper">
+  <canvas
+    baseChart
+    [type]="'line'"
+    [datasets]="chartData"
+    [labels]="chartLabels"
+    [options]="chartOptions"
+  >
+  </canvas>
+</div>

@@ -1,0 +1,21 @@
+{
+  "members": [
+    {
+      "id": "3dea",
+      "cin": "1",
+      "name": "melek",
+      "type": "student",
+      "cv": "link",
+      "createdDate": "2024-10-06T17:37:21.372Z"
+    }
+  ],
+  "events": [
+    {
+      "id": "f962",
+      "titre": "event",
+      "datedebut": "2024-10-08T23:00:00.000Z",
+      "datefin": "2024-10-11T23:00:00.000Z",
+      "Lieu": null
+    }
+  ]
+}
