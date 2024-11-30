@@ -32,6 +32,20 @@ import { ModalComponent } from './modal/modal.component';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { NgChartsModule } from 'ng2-charts';
+import { ToolModalComponent } from './tool-modal/tool-modal.component';
+import { ToolsCreateComponent } from './tools-create/tools-create.component';
+import { AffecterMemberComponent } from './affecter-member/affecter-member.component';
+import { AffecterEnseignantComponent } from './affecter-enseignant/affecter-enseignant.component';
+import { ConsulterMemberComponent } from './consulter-member/consulter-member.component';
+import { ConsulterInvitesComponent } from './consulter-invites/consulter-invites.component';
+import { ArticleCreateComponent } from './article-create/article-create.component';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { DragDropModule } from '@angular/cdk/drag-drop';
+import { JsonPipe } from '@angular/common';
+import { MatChipsModule } from '@angular/material/chips';
+import { MatSelectModule } from '@angular/material/select';
+import { MatSortModule } from '@angular/material/sort';
+import { MatTooltipModule } from '@angular/material/tooltip';
 @NgModule({
   declarations: [
     AppComponent,
@@ -45,10 +59,18 @@ import { NgChartsModule } from 'ng2-charts';
     EventComponent,
     LoginComponent,
     ModalComponent,
+    ToolModalComponent,
+    ToolsCreateComponent,
+    AffecterMemberComponent,
+    AffecterEnseignantComponent,
+    ConsulterMemberComponent,
+    ConsulterInvitesComponent,
+    ArticleCreateComponent,
   ],
   imports: [
     FirebaseModule,
     MatCardModule,
+    MatPaginatorModule,
     MatMenuModule,
     MatListModule,
     MatToolbarModule,
@@ -69,6 +91,35 @@ import { NgChartsModule } from 'ng2-charts';
     MatDatepickerModule,
     MatNativeDateModule,
     NgChartsModule,
+    BrowserModule,
+    AppRoutingModule,
+    MatTableModule,
+    MatIconModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatTooltipModule,
+    MatButtonModule,
+    ReactiveFormsModule,
+    FormsModule,
+    HttpClientModule,
+    FlexLayoutModule,
+    BrowserAnimationsModule,
+    MatToolbarModule,
+    MatListModule,
+    MatMenuModule,
+    MatSidenavModule,
+    FirebaseModule,
+    MatCardModule,
+    JsonPipe,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    MatDialogModule,
+    NgChartsModule,
+    MatSelectModule,
+    MatSortModule,
+    MatPaginatorModule,
+    MatChipsModule,
+    DragDropModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

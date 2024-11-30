@@ -1,63 +1,191 @@
-<div fxLayout="row" fxLayoutAlign="end center">
-  <button mat-raised-button color="primary" routerLink="/create">
-    <mat-icon>add</mat-icon>
-    Create New
-  </button>
+<div fxLayout="row" fxLayoutAlign="center center">
+  <button mat-raised-button routerLink="create">créer un nouveau membre</button>
 </div>
-<table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
-  <!-- ID Column -->
-  <ng-container matColumnDef="id">
-    <th mat-header-cell *matHeaderCellDef>ID</th>
-    <td mat-cell *matCellDef="let element">{{ element.id }}</td>
-  </ng-container>
 
-  <!-- CIN Column -->
-  <ng-container matColumnDef="cin">
-    <th mat-header-cell *matHeaderCellDef>CIN</th>
-    <td mat-cell *matCellDef="let element">{{ element.cin }}</td>
-  </ng-container>
+<div fxLayout="row" fxLayoutAlign="center center">
+  <div class="example-container mat-elevation-z8">
+    <div fxLayout="row" fxLayoutAlign="space-evenly center">
+      <h1> Teachers </h1>
+      <mat-form-field>
+        <mat-label>Filter</mat-label>
+        <input
+          matInput
+          (keyup)="applyFilterOnTeachers($event)"
+          placeholder="Ex. John/1"
+          #input
+        />
+      </mat-form-field>
 
-  <!-- NAME Column -->
-  <ng-container matColumnDef="name">
-    <th mat-header-cell *matHeaderCellDef>Name</th>
-    <td mat-cell *matCellDef="let element">{{ element.name }}</td>
-  </ng-container>
+    </div>
+    <div class="mat-elevation-z8">
+      <table mat-table [dataSource]="teacherSource" class="pastel-grad" matSort>
+        <ng-container matColumnDef="id">
+          <th mat-header-cell *matHeaderCellDef>ID</th>
+          <td mat-cell *matCellDef="let element">{{ element.id }}</td>
+        </ng-container>
+        <ng-container matColumnDef="cin">
+          <th mat-header-cell *matHeaderCellDef>CIN</th>
+          <td mat-cell *matCellDef="let element">{{ element.cin }}</td>
+        </ng-container>
+        <ng-container matColumnDef="nom">
+          <th mat-header-cell *matHeaderCellDef>NOM</th>
+          <td mat-cell *matCellDef="let element">{{ element.nom }}</td>
+        </ng-container>
+        <ng-container matColumnDef="prenom">
+          <th mat-header-cell *matHeaderCellDef>PRENOM</th>
+          <td mat-cell *matCellDef="let element">{{ element.prenom }}</td>
+        </ng-container>
+        <ng-container matColumnDef="dateNaissance">
+          <th mat-header-cell *matHeaderCellDef>DATE NAISSANCE</th>
+          <td mat-cell *matCellDef="let element">{{ element.dateNaissance }}</td>
+        </ng-container>
+        <ng-container matColumnDef="cv">
+          <th mat-header-cell *matHeaderCellDef>CV</th>
+          <td mat-cell *matCellDef="let element">
+            <a href="{{ element.cv }}" mat-icon-button color="primary">
+              <mat-icon color="accent">picture_as_pdf</mat-icon>
+            </a>
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="grade">
+          <th mat-header-cell *matHeaderCellDef>GRADE</th>
+          <td mat-cell *matCellDef="let element">{{ element.grade }}</td>
+        </ng-container>
+        <ng-container matColumnDef="etablissement">
+          <th mat-header-cell *matHeaderCellDef>ETABLISSEMENT</th>
+          <td mat-cell *matCellDef="let element">{{ element.etablissement }}</td>
+        </ng-container>
 
-  <!-- TYPE Column -->
-  <ng-container matColumnDef="type">
-    <th mat-header-cell *matHeaderCellDef>Type</th>
-    <td mat-cell *matCellDef="let element">{{ element.type }}</td>
-  </ng-container>
+        <ng-container matColumnDef="actions" stickyEnd>
+          <th mat-header-cell *matHeaderCellDef></th>
+          <td mat-cell *matCellDef="let element">
+            <button
+              routerLink="teacher/{{ element.id }}/edit"
+              mat-icon-button
+            
+            >
+              <mat-icon>edit</mat-icon>
+            </button>
+            <button (click)="deleteTeacher(element.id)" mat-icon-button>
+              <mat-icon>delete</mat-icon>
+            </button>
+          </td>
+        </ng-container>
 
-  <!-- CV Column -->
-  <ng-container matColumnDef="cv">
-    <th mat-header-cell *matHeaderCellDef>CV</th>
-    <td mat-cell *matCellDef="let element">
-      <a href="{{ element.cv }}"><mat-icon>picture_as_pdf</mat-icon></a>
-    </td>
-  </ng-container>
+        <tr mat-header-row *matHeaderRowDef="teacherColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: teacherColumns"></tr>
+        <!-- Row shown when there is no matching data. -->
+        <tr class="mat-row" *matNoDataRow>
+          <td class="mat-cell" colspan="4">
+            No data matching the filter "{{ input.value }}"
+          </td>
+        </tr>
+      </table>
+      <mat-paginator #teacherPaginator [pageSizeOptions]="[5, 10, 25, 100]" aria-label="Selectionner la page d'teachers"></mat-paginator>
+    </div>
+  </div>
+</div>
+ <hr>
+ <div fxLayout="row" fxLayoutAlign="center center">
+  <div class="example-container mat-elevation-z8">
+    <div fxLayout="row" fxLayoutAlign="space-evenly center">
+      <h1> Students </h1>
+      <mat-form-field>
+        <mat-label>Filter</mat-label>
+        <input
+          matInput
+          (keyup)="applyFilterOnStudents($event)"
+          placeholder="Ex. John/1"
+          #input
+        />
+      </mat-form-field>
 
-  <!-- Created Date Column -->
-  <ng-container matColumnDef="createdDate">
-    <th mat-header-cell *matHeaderCellDef>Created Date</th>
-    <td mat-cell *matCellDef="let element">
-      {{ element.createdDate | date : "short" }}
-    </td>
-  </ng-container>
+    </div>
+    <div class="mat-elevation-z8">
+      <table mat-table [dataSource]="studentSource" class="pastel-grad" matSort>
+        <!-- <ng-container matColumnDef="id">
+          <th mat-header-cell *matHeaderCellDef>ID</th>
+          <td mat-cell *matCellDef="let element">{{ element.id }}</td>
+        </ng-container> -->
+        <ng-container matColumnDef="cin">
+          <th mat-header-cell *matHeaderCellDef>CIN</th>
+          <td mat-cell *matCellDef="let element">{{ element.cin }}</td>
+        </ng-container>
+        <ng-container matColumnDef="nom">
+          <th mat-header-cell *matHeaderCellDef>NOM</th>
+          <td mat-cell *matCellDef="let element">{{ element.nom }}</td>
+        </ng-container>
+        <ng-container matColumnDef="prenom">
+          <th mat-header-cell *matHeaderCellDef>PRENOM</th>
+          <td mat-cell *matCellDef="let element">{{ element.prenom }}</td>
+        </ng-container>
+        <ng-container matColumnDef="dateNaissance">
+          <th mat-header-cell *matHeaderCellDef>DATE NAISSANCE</th>
+          <td mat-cell *matCellDef="let element">{{ element.dateNaissance }}</td>
+        </ng-container>
+        <ng-container matColumnDef="cv">
+          <th mat-header-cell *matHeaderCellDef>CV</th>
+          <td mat-cell *matCellDef="let element">
+            <a href="{{ element.cv }}" mat-icon-button color="primary">
+              <mat-icon color="accent">picture_as_pdf</mat-icon>
+            </a>
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="encadrant">
+          <th mat-header-cell *matHeaderCellDef>ENCADRANT</th>
+          <td mat-cell *matCellDef="let element">
+            <ng-container *ngIf="element.encadrant != null; else affecterButton">
+              <button mat-stroked-button color="accent" (click)="affecter(element)">
+                <mat-icon>pregnant_woman</mat-icon>
+              </button> {{ element.encadrant.prenom }} {{ element.encadrant.nom }}
+            </ng-container>
+            <ng-template #affecterButton>
+              <button mat-stroked-button color="accent" (click)="affecter(element)">
+                <mat-icon>pregnant_woman</mat-icon> Affecter
+              </button>
+            </ng-template>
+          </td>
 
-  <ng-container matColumnDef="icons">
-    <th mat-header-cell *matHeaderCellDef></th>
-    <td mat-cell *matCellDef="let element">
-      <button mat-icon-button routerLink="/{{ element.id }}/edit">
-        <mat-icon>edit</mat-icon>
-      </button>
-      <button mat-icon-button color="warn" (click)="delete(element.id)">
-        <mat-icon>delete</mat-icon>
-      </button>
-    </td>
-  </ng-container>
+        </ng-container>
+        <ng-container matColumnDef="dateInscription">
+          <th mat-header-cell *matHeaderCellDef>DATE INSCRIPTION</th>
+          <td mat-cell *matCellDef="let element">{{ element.dateInscription }}</td>
+        </ng-container>
+        <ng-container matColumnDef="diplome">
+          <th mat-header-cell *matHeaderCellDef>DIPLOME</th>
+          <td mat-cell *matCellDef="let element">{{ element.diplome }}</td>
+        </ng-container>
+        <ng-container matColumnDef="sujet">
+          <th mat-header-cell *matHeaderCellDef>SUJET</th>
+          <td mat-cell *matCellDef="let element">{{ element.sujet }}</td>
+        </ng-container>
+        <ng-container matColumnDef="actions" stickyEnd>
+          <th mat-header-cell *matHeaderCellDef></th>
+          <td mat-cell *matCellDef="let element" fxLayout="column" fxLayoutAlign="space-evenly center" >
+            <button
+              routerLink="student/{{ element.id }}/edit"
+              mat-icon-button
+              
+            >
+              <mat-icon>edit</mat-icon>
+            </button>
+            <button (click)="deleteStudent(element.id)" mat-icon-button>
+              <mat-icon>delete</mat-icon>
+            </button>
+          </td>
+        </ng-container>
 
-  <!-- Header and Row declarations -->
-  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-  <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
-</table>
+        <tr mat-header-row *matHeaderRowDef="studentColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: studentColumns"></tr>
+        <!-- Row shown when there is no matching data. -->
+        <tr class="mat-row" *matNoDataRow>
+          <td class="mat-cell" colspan="4">
+            No data matching the filter "{{ input.value }}"
+          </td>
+        </tr>
+      </table>
+      <mat-paginator #studentPaginator [pageSizeOptions]="[ 5, 10, 25, 100]" aria-label="Selectionner la page d'students"></mat-paginator>
+    </div>
+  </div>
+</div>
+

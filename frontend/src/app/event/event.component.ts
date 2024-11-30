@@ -1,65 +1,109 @@
-import { Component, OnInit } from '@angular/core';
-import { Evt } from 'src/models/Event';
+import {
+  AfterViewInit,
+  ChangeDetectorRef,
+  Component,
+  OnDestroy,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
 import { EventService } from 'src/services/event.service';
-import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
-import { MatDialog } from '@angular/material/dialog';
-import { ModalComponent } from '../modal/modal.component';
+import { MatTableDataSource } from '@angular/material/table';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatSort } from '@angular/material/sort';
+import { Observable } from 'rxjs';
+import { ConsulterInvitesComponent } from '../consulter-invites/consulter-invites.component';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
+import { AffecterMemberComponent } from '../affecter-member/affecter-member.component';
+import { MemberService } from 'src/services/member.service';
+import { Router } from '@angular/router';
+import { Evt } from 'src/models/Event';
 
 @Component({
-  selector: 'app-event',
+  selector: 'app-events',
   templateUrl: './event.component.html',
   styleUrls: ['./event.component.css'],
 })
-export class EventComponent implements OnInit {
-  dataSource: Evt[] = [];
+export class EventComponent implements OnInit, OnDestroy, AfterViewInit {
+  displayedColumns: string[] = ['id', 'titre', 'dateDebut', 'dateFin', 'lieu'];
+  dataSource!: MatTableDataSource<Evt>;
+  obs!: Observable<any>;
 
-  constructor(private ES: EventService, private dialog: MatDialog) {}
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
+  @ViewChild(MatSort) sort!: MatSort;
 
-  displayedColumns: string[] = [
-    'id',
-    'titre',
-    'datedebut',
-    'datefin',
-    'lieu',
-    'icons',
-  ];
+  constructor(
+    private ES: EventService,
+    private MS: MemberService,
+    private router: Router,
+    private changeDetectorRef: ChangeDetectorRef,
+    private dialog: MatDialog
+  ) {}
 
-  ngOnInit(): void {
-    this.ES.getAllEvents().subscribe((data) => {
-      this.dataSource = data;
+  loadEvents(): void {
+    this.ES.getEvents().subscribe((events) => {
+      this.dataSource = new MatTableDataSource(events);
+      this.obs = this.dataSource.connect();
+
+      // Move paginator initialization inside the subscription block
+      if (this.dataSource) {
+        this.dataSource.paginator = this.paginator;
+        this.dataSource.sort = this.sort;
+      }
     });
   }
+  ngOnInit() {
+    this.loadEvents();
+  }
 
-  open(): void {
-    const dialogRef = this.dialog.open(ModalComponent);
+  ngAfterViewInit() {
+    // No additional logic needed for ngAfterViewInit at the moment
+  }
+
+  applyFilter(event: Event) {
+    const filterValue = (event.target as HTMLInputElement).value;
+    this.dataSource.filter = filterValue.trim().toLowerCase();
+
+    if (this.dataSource.paginator) {
+      this.dataSource.paginator.firstPage();
+    }
+  }
+  consulter(eventId: number): void {
+    const dialogConfig = new MatDialogConfig();
+
+    dialogConfig.disableClose = true;
+    dialogConfig.autoFocus = true;
+    dialogConfig.data = { eventId };
+    const dialogRef = this.dialog.open(ConsulterInvitesComponent, dialogConfig);
+  }
+
+  affecter(eventId: number): void {
+    const dialogConfig = new MatDialogConfig();
+
+    dialogConfig.disableClose = true;
+    dialogConfig.autoFocus = true;
+
+    const dialogRef = this.dialog.open(AffecterMemberComponent, dialogConfig);
 
     dialogRef.afterClosed().subscribe((data) => {
-      if (data) {
-        this.ES.createEvent(data).subscribe(() => {
-          this.ES.getAllEvents().subscribe((events) => {
-            this.dataSource = events;
-          });
-        });
-      }
+      console.log(data);
+      this.MS.affectMemberToEvent(data.member.id, eventId).subscribe(() => {
+        // or manually add the tool to the existing list
+        // this.dataSource.push(toolNew);
+        this.router.navigate(['/dashboard']);
+        // Close the dialog
+      });
     });
   }
 
   delete(id: string): void {
-    //lancer la boite
-    let dialogRef = this.dialog.open(ConfirmDialogComponent, {
-      height: '200px',
-      width: '300px',
+    this.ES.deleteEvent(id).subscribe(() => {
+      this.loadEvents();
     });
-    //attendre le resultat de click
-    dialogRef.afterClosed().subscribe((result) => {
-      if (result == true) {
-        //si click = confirm =>
-        this.ES.deleteEvent(id).subscribe(() => {
-          this.ES.getAllEvents().subscribe((data) => {
-            this.dataSource = data;
-          });
-        });
-      }
-    });
+  }
+
+  ngOnDestroy() {
+    if (this.dataSource) {
+      this.dataSource.disconnect();
+    }
   }
 }

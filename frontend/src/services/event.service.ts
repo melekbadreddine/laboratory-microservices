@@ -1,37 +1,58 @@
 import { HttpClient } from '@angular/common/http';
-import { ReturnStatement } from '@angular/compiler';
 import { Injectable } from '@angular/core';
+import { API, GLOBAL } from 'src/app/app-config';
 import { Observable } from 'rxjs';
 import { Evt } from 'src/models/Event';
-import { Member } from 'src/models/Member';
 
 @Injectable({
   providedIn: 'root',
 })
 export class EventService {
-  nbevents: number = 0;
+  // tab: enseEventignant[] = GLOBAL._DB.events;
+  //Injection de HTTP CLIENT
+  constructor(private httpClient: HttpClient) {}
 
-  constructor(private http: HttpClient) {}
-  getAllEvents(): Observable<Evt[]> {
-    //envoyer une req http vers backend
-    return this.http.get<Evt[]>('http://localhost:3000/events');
+  getEvents(): Observable<Evt[]> {
+    return this.httpClient.get<Evt[]>(`${API.url}/${API.event}/events`);
+    //return new Observable((observer) => {observer.next(this.tab)});
   }
-  getMemberByID(id: string): Observable<Member> {
-    return this.http.get<Member>(`http://localhost:3000/members/${id}`);
+
+  saveEvent(event: Evt): Observable<Evt> {
+    return this.httpClient.post<Evt>(
+      `${API.url}/${API.event}/events/create`,
+      event
+    );
+
+    //ken maandekch back-end
+
+    //this.tab.unshift(member);
+    //this.tab = [event, ...this.tab.filter(item=> item.id!= event.id)];
+    //return new Observable (observer => {observer.next()});
   }
-  createEvent(evt: Evt): Observable<void> {
-    return this.http.post<void>('http://localhost:3000/events', evt);
+
+  updateEvent(event: Evt): Observable<Evt> {
+    return this.httpClient.put<Evt>(
+      `${API.url}/${API.event}/events/${event.id}/update`,
+      event
+    );
   }
+
   deleteEvent(id: string): Observable<void> {
-    return this.http.delete<void>(`http://localhost:3000/events/${id}`);
+    this.httpClient.delete<void>(
+      `${API.url}/${API.member}/members-per-event/${id}/delete`
+    );
+    return this.httpClient.delete<void>(
+      `${API.url}/${API.event}/events/${id}/delete`
+    );
   }
-  updateMember(id: string, m: Member): Observable<void> {
-    return this.http.put<void>(`http://localhost:3000/members/${id}`, m);
+
+  getEventById(id: string): Observable<Evt> {
+    return this.httpClient.get<Evt>(`${API.url}/${API.event}/events/${id}`);
+    //return new Observable((observer) => {observer.next(this.tab.find((event)=>event.id === id))});
   }
-  countNbEvents(): number {
-    this.getAllEvents().subscribe((data) => {
-      this.nbevents = data.length;
-    });
-    return this.nbevents;
+
+  getFullYearsEvents(startYear: number, endYear: number): Observable<number[]> {
+    const url = `${API.url}/${API.event}/events/full-years-events/${startYear}/${endYear}`;
+    return this.httpClient.get<number[]>(url);
   }
 }

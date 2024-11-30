@@ -1,21 +1,58 @@
 {
   "members": [
     {
-      "id": "3dea",
-      "cin": "1",
-      "name": "melek",
-      "type": "student",
-      "cv": "link",
-      "createdDate": "2024-10-06T17:37:21.372Z"
+      "id": "1234",
+      "cin": "5678",
+      "nom": "imene",
+      "prenom": "imene",
+      "dateNaissance": "12/51/45",
+      "cv": "https://material.angular.io/?theme=indigo-pink",
+      "type": "chercheur",
+      "tab_pub": ["pub1", "pub2"]
+    },
+    {
+      "id": "12345",
+      "cin": "56789",
+      "nom": "dali",
+      "prenom": "imene",
+      "dateNaissance": "12/23/23",
+      "cv": "https://material.angular.io/?theme=indigo-pink",
+      "type": "chercheur",
+      "tab_pub": ["pub3", "pub4", "pub5"]
+    },
+    {
+      "id": "432156",
+      "cin": "5678910",
+      "nom": "assil",
+      "prenom": "imene",
+      "dateNaissance": "99/99/90",
+      "cv": "https://material.angular.io/?theme=indigo-pink",
+      "type": "etudiant",
+      "tab_pub": ["pub1", "pub4", "pub6"]
     }
   ],
   "events": [
     {
-      "id": "f962",
-      "titre": "event",
-      "datedebut": "2024-10-08T23:00:00.000Z",
-      "datefin": "2024-10-11T23:00:00.000Z",
-      "Lieu": null
+      "id": "123",
+      "titre": "ieeextreme",
+      "dateDebut": "12/30/2020",
+      "dateFin": "12/31/2020",
+      "lieu": "tunis"
+    },
+    {
+      "id": "124",
+      "titre": "iprotect",
+      "dateDebut": "11/11/2023",
+      "dateFin": "12/11/2023",
+      "lieu": "sfax"
+    }
+  ],
+  "tools": [
+    {
+      "id": "1231",
+      "date": "15/11/2023",
+      "source": "google.com",
+      "createur": "1234"
     }
   ]
 }

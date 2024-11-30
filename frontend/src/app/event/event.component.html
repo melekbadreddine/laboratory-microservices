@@ -1,57 +1,68 @@
-<div fxLayout="row" fxLayoutAlign="end center">
-  <button mat-raised-button color="primary" (click)="open()">
-    <mat-icon>add</mat-icon>
-    Create New
+<div fxLayout="row" fxLayoutAlign="center center">
+  <button mat-raised-button routerLink="create">
+    Créer une nouvelle évènement
   </button>
 </div>
-<table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
-  <!-- ID Column -->
-  <ng-container matColumnDef="id">
-    <th mat-header-cell *matHeaderCellDef>ID</th>
-    <td mat-cell *matCellDef="let element">{{ element.id }}</td>
-  </ng-container>
 
-  <!-- NAME Column -->
-  <ng-container matColumnDef="titre">
-    <th mat-header-cell *matHeaderCellDef>Title</th>
-    <td mat-cell *matCellDef="let element">{{ element.titre }}</td>
-  </ng-container>
-
-  <!-- Created Date Column -->
-  <ng-container matColumnDef="datedebut">
-    <th mat-header-cell *matHeaderCellDef>Date Debut</th>
-    <td mat-cell *matCellDef="let element">
-      {{ element.datefin | date : "short" }}
-    </td>
-  </ng-container>
-
-  <!-- Created Date Column -->
-  <ng-container matColumnDef="datefin">
-    <th mat-header-cell *matHeaderCellDef>Date Fin</th>
-    <td mat-cell *matCellDef="let element">
-      {{ element.datefin | date : "short" }}
-    </td>
-  </ng-container>
-
-  <!-- TYPE Column -->
-  <ng-container matColumnDef="lieu">
-    <th mat-header-cell *matHeaderCellDef>Place</th>
-    <td mat-cell *matCellDef="let element">{{ element.lieu }}</td>
-  </ng-container>
-
-  <ng-container matColumnDef="icons">
-    <th mat-header-cell *matHeaderCellDef></th>
-    <td mat-cell *matCellDef="let element">
-      <button mat-icon-button routerLink="/{{ element.id }}/edit">
-        <mat-icon>edit</mat-icon>
-      </button>
-      <button mat-icon-button color="warn" (click)="delete(element.id)">
-        <mat-icon>delete</mat-icon>
-      </button>
-    </td>
-  </ng-container>
-
-  <!-- Header and Row declarations -->
-  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-  <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
-</table>
+<div fxLayout="row" fxLayoutAlign="space-evenly center">
+  <h1>Evenements</h1>
+  <mat-form-field>
+    <mat-label>Filter</mat-label>
+    <input
+      matInput
+      (keyup)="applyFilter($event)"
+      placeholder="Ex. John/1"
+      #input
+    />
+  </mat-form-field>
+</div>
+<div class="justify-content">
+  <div class="cards mat-elevation-z8">
+    <mat-card *ngFor="let card of obs | async" class="event-card pastel-grad">
+      <mat-card-header>
+        <mat-card-title>{{ card.titre }}</mat-card-title>
+        <mat-card-subtitle
+          class="dates"
+          fxLayout="row"
+          fxLayoutAlign="space-around center"
+        >
+          <mat-icon>event</mat-icon>
+          {{ card.dateDebut | date }} - {{ card.dateFin | date }}
+          <mat-icon> location_on</mat-icon> {{ card.lieu }}
+          <button
+            mat-icon-button
+            matTooltip="Afficher la liste des invités"
+            color="green"
+            (click)="consulter(card.id)"
+          >
+            <mat-icon>spa</mat-icon>
+          </button>
+        </mat-card-subtitle>
+      </mat-card-header>
+      <mat-card-content> </mat-card-content>
+      <mat-card-actions fxLayout="row" fxLayoutAlign="space center">
+        <!-- <button mat-icon-button matTooltip="Modifier" routerLink="{{ card.id }}/edit"  >
+          <mat-icon>edit</mat-icon>
+        </button> -->
+        <button
+          mat-icon-button
+          matTooltip="Inviter"
+          (click)="affecter(card.id)"
+        >
+          <mat-icon>group_add</mat-icon>
+        </button>
+        <button
+          mat-icon-button
+          matTooltip="Supprimer"
+          (click)="delete(card.id)"
+        >
+          <mat-icon>delete</mat-icon>
+        </button>
+      </mat-card-actions>
+    </mat-card>
+  </div>
+</div>
+<mat-paginator
+  [pageSizeOptions]="[6, 12, 18, 24]"
+  aria-label="Select page of events"
+></mat-paginator>
