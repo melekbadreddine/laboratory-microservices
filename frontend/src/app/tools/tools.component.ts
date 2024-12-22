@@ -9,14 +9,15 @@ import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { ToolService } from 'src/services/tool.service';
 import { ToolsCreateComponent } from '../tools-create/tools-create.component';
 import { Router } from '@angular/router';
+import { Tool } from 'src/models/tool';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MemberService } from 'src/services/member.service';
 import { Observable } from 'rxjs';
+import { Member } from 'src/models/member';
 import { AffecterMemberComponent } from '../affecter-member/affecter-member.component';
 import { ConsulterMemberComponent } from '../consulter-member/consulter-member.component';
-import { Tool } from 'src/models/Tool';
 
 @Component({
   selector: 'app-tools',
@@ -24,8 +25,14 @@ import { Tool } from 'src/models/Tool';
   styleUrls: ['./tools.component.css'],
 })
 export class ToolsComponent implements AfterViewInit, OnInit, OnDestroy {
-  obs: Observable<any> = new Observable();
-  dataSource: MatTableDataSource<Tool> = new MatTableDataSource();
+  obs!: Observable<any>;
+  dataSource!: MatTableDataSource<Tool>;
+  // displayedColumns: string[] = [ "id",
+  // "nom",
+  // "date",
+  // "source",
+  // "createur"];
+
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
@@ -38,8 +45,8 @@ export class ToolsComponent implements AfterViewInit, OnInit, OnDestroy {
           });
         }
       });
-
-      this.dataSource.data = tools;
+      this.dataSource = new MatTableDataSource(tools);
+      this.obs = this.dataSource.connect();
 
       // Move paginator initialization inside the subscription block
       if (this.dataSource) {
@@ -48,7 +55,6 @@ export class ToolsComponent implements AfterViewInit, OnInit, OnDestroy {
       }
     });
   }
-
   constructor(
     private TS: ToolService,
     private MS: MemberService,
@@ -68,14 +74,19 @@ export class ToolsComponent implements AfterViewInit, OnInit, OnDestroy {
     dialogRef.afterClosed().subscribe((data) => {
       const tool = { ...data };
 
-      this.TS.saveTool(tool).subscribe(() => {
+      this.TS.saveTool(tool).subscribe((tool) => {
+        // Update the data source after saving the tool
         this.loadTools();
+        // or manually add the tool to the existing list
+        // this.dataSource.push(toolNew);
+
+        // Close the dialog
       });
     });
   }
-
   affecter(toolId: number): void {
     const dialogConfig = new MatDialogConfig();
+
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = true;
 
@@ -84,6 +95,10 @@ export class ToolsComponent implements AfterViewInit, OnInit, OnDestroy {
     dialogRef.afterClosed().subscribe((data) => {
       console.log(data);
       this.MS.affectMemberToTool(data.member.id, toolId).subscribe(() => {
+        // or manually add the tool to the existing list
+        // this.dataSource.push(toolNew);
+        // this.router.navigate(['/dashboard']);
+        // Close the dialog
         location.reload();
       });
     });
@@ -91,16 +106,16 @@ export class ToolsComponent implements AfterViewInit, OnInit, OnDestroy {
 
   consulter(toolId: number): void {
     const dialogConfig = new MatDialogConfig();
+
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = true;
     dialogConfig.data = { toolId };
-    this.dialog.open(ConsulterMemberComponent, dialogConfig);
+    const dialogRef = this.dialog.open(ConsulterMemberComponent, dialogConfig);
   }
 
   ngOnInit() {
     this.loadTools();
   }
-
   ngAfterViewInit() {}
 
   applyFilter(event: Event) {

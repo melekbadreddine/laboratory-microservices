@@ -2,7 +2,7 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { Router } from '@angular/router';
-import { Member } from 'src/models/Member';
+import { Member } from 'src/models/member';
 import { MemberService } from 'src/services/member.service';
 
 @Component({
@@ -24,7 +24,7 @@ export class ConsulterMemberComponent implements OnInit {
   ngOnInit(): void {
     const toolId = this.data.toolId;
 
-    // Fetch the member
+    // Now you can use toolId to fetch the member
     this.MS.getMemberByOutil(toolId).subscribe((member) => {
       this.member = member;
     });

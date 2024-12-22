@@ -1,15 +1,15 @@
 import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { GLOBAL } from '../app-config';
+import { Member } from 'src/models/member';
 import { MemberService } from 'src/services/member.service';
 import { MatSort } from '@angular/material/sort';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
+import { Enseignant } from 'src/models/enseignant';
+import { Etudiant } from 'src/models/etudiant';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
-import { Router } from '@angular/router';
-import { Member } from 'src/models/Member';
-import { Student } from 'src/models/Student';
-import { Teacher } from 'src/models/Teacher';
 import { AffecterEnseignantComponent } from '../affecter-enseignant/affecter-enseignant.component';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-member',
@@ -17,10 +17,10 @@ import { AffecterEnseignantComponent } from '../affecter-enseignant/affecter-ens
   styleUrls: ['./member.component.css'],
 })
 export class MemberComponent implements AfterViewInit, OnInit {
-  teacherSource!: MatTableDataSource<Teacher>; // db.tab.teachers
-  studentSource!: MatTableDataSource<Student>;
+  enseignantSource!: MatTableDataSource<Enseignant>; // db.tab.enseignants
+  etudiantSource!: MatTableDataSource<Etudiant>;
 
-  teacherColumns: string[] = [
+  enseignantColumns: string[] = [
     'cin',
     'nom',
     'prenom',
@@ -30,7 +30,7 @@ export class MemberComponent implements AfterViewInit, OnInit {
     'etablissement',
     'actions',
   ];
-  studentColumns: string[] = [
+  etudiantColumns: string[] = [
     'cin',
     'nom',
     'prenom',
@@ -43,26 +43,26 @@ export class MemberComponent implements AfterViewInit, OnInit {
     'actions',
   ];
 
-  @ViewChild('teacherPaginator') teacherPaginator!: MatPaginator;
-  @ViewChild('studentPaginator') studentPaginator!: MatPaginator;
+  @ViewChild('enseignantPaginator') enseignantPaginator!: MatPaginator;
+  @ViewChild('etudiantPaginator') etudiantPaginator!: MatPaginator;
 
   loadMembers(): void {
-    // Teachers
-    this.MS.getTeachers().subscribe((members) => {
-      this.teacherSource = new MatTableDataSource(members);
+    // Enseignants
+    this.MS.getEnseignants().subscribe((members) => {
+      this.enseignantSource = new MatTableDataSource(members);
 
-      if (this.teacherSource) {
-        console.log(this.teacherSource.data);
-        this.teacherSource.paginator = this.teacherPaginator; // Assign the paginator
+      if (this.enseignantSource) {
+        console.log(this.enseignantSource.data);
+        this.enseignantSource.paginator = this.enseignantPaginator; // Assign the paginator
       }
     });
 
-    // Students
-    this.MS.getStudents().subscribe((members) => {
-      this.studentSource = new MatTableDataSource(members);
-      if (this.studentSource) {
-        console.log(this.studentSource.data);
-        this.studentSource.paginator = this.studentPaginator; // Assign the paginator
+    // Etudiants
+    this.MS.getEtudiants().subscribe((members) => {
+      this.etudiantSource = new MatTableDataSource(members);
+      if (this.etudiantSource) {
+        console.log(this.etudiantSource.data);
+        this.etudiantSource.paginator = this.etudiantPaginator; // Assign the paginator
       }
     });
   }
@@ -78,25 +78,25 @@ export class MemberComponent implements AfterViewInit, OnInit {
   }
   ngAfterViewInit() {}
 
-  applyFilterOnTeachers(event: Event) {
+  applyFilterOnEnseignants(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
-    this.teacherSource.filter = filterValue.trim().toLowerCase();
+    this.enseignantSource.filter = filterValue.trim().toLowerCase();
 
-    if (this.teacherSource.paginator) {
-      this.teacherSource.paginator.firstPage();
+    if (this.enseignantSource.paginator) {
+      this.enseignantSource.paginator.firstPage();
     }
   }
 
-  applyFilterOnStudents(event: Event) {
+  applyFilterOnEtudiants(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
-    this.studentSource.filter = filterValue.trim().toLowerCase();
+    this.etudiantSource.filter = filterValue.trim().toLowerCase();
 
-    if (this.studentSource.paginator) {
-      this.studentSource.paginator.firstPage();
+    if (this.etudiantSource.paginator) {
+      this.etudiantSource.paginator.firstPage();
     }
   }
 
-  affecter(student: Member): void {
+  affecter(etudiant: Member): void {
     const dialogConfig = new MatDialogConfig();
 
     dialogConfig.disableClose = true;
@@ -109,24 +109,26 @@ export class MemberComponent implements AfterViewInit, OnInit {
 
     dialogRef.afterClosed().subscribe((data) => {
       console.log(data);
-      this.MS.affectStudentToTeacher(student, data.encadrant).subscribe(() => {
-        // or manually add the tool to the existing list
-        // this.dataSource.push(toolNew);
-        // this.router.navigate(['/dashboard']);
-        // Close the dialog
-        location.reload();
-      });
+      this.MS.affectEtudiantToEnseignant(etudiant, data.encadrant).subscribe(
+        () => {
+          // or manually add the tool to the existing list
+          // this.dataSource.push(toolNew);
+          // this.router.navigate(['/dashboard']);
+          // Close the dialog
+          location.reload();
+        }
+      );
     });
   }
 
-  deleteTeacher(memberId: number) {
-    this.MS.deleteTeacher(memberId).subscribe(() => {
+  deleteEnseignant(memberId: number) {
+    this.MS.deleteEnseignant(memberId).subscribe(() => {
       this.loadMembers();
     });
   }
 
-  deleteStudent(memberId: number) {
-    this.MS.deleteStudent(memberId).subscribe(() => {
+  deleteEtudiant(memberId: number) {
+    this.MS.deleteEtudiant(memberId).subscribe(() => {
       this.loadMembers();
     });
   }

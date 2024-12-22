@@ -1,9 +1,11 @@
-import { Member } from './Member';
+import { Member } from "./member";
 
-export interface Tool {
-  id: string;
-  nom: string;
-  date: Date;
-  source: string;
-  createur?: Member;
+export interface Tool{
+
+  id: number,
+  nom: string,
+  date: Date,
+  source: string,
+  createur?: Member
+
 }

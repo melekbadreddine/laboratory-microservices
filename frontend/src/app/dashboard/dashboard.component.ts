@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
+import { PublicationService } from 'src/services/publication.service';
+import { EvenementService } from 'src/services/event.service';
 import { MemberService } from 'src/services/member.service';
 import { ToolService } from 'src/services/tool.service';
 import { ChartDataset, ChartOptions } from 'chart.js';
 import { MatLabel } from '@angular/material/form-field';
-import { ArticleService } from 'src/services/article.service';
-import { EventService } from 'src/services/event.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -100,9 +100,9 @@ export class DashboardComponent implements OnInit {
   etablissementTypesLabel: string[] = [];
 
   constructor(
-    private ES: EventService,
+    private ES: EvenementService,
     private TS: ToolService,
-    private AS: ArticleService,
+    private PS: PublicationService,
     private MS: MemberService
   ) {
     // this.nb_events = ES.tab.length;
@@ -111,7 +111,7 @@ export class DashboardComponent implements OnInit {
   ngOnInit(): void {
     this.MS.getMembers().subscribe((members) => {
       members.forEach((element) => {
-        this.chartLabels.push(element.name);
+        this.chartLabels.push(element.nom + ' ' + element.prenom);
       });
       this.nb_members = members.length;
     });
@@ -150,16 +150,16 @@ export class DashboardComponent implements OnInit {
     this.TS.getTools().subscribe((tools) => {
       this.nb_tools = tools.length;
     });
-    this.ES.getEvents().subscribe((events) => {
+    this.ES.getEvenements().subscribe((events) => {
       this.nb_events = events.length;
     });
-    this.AS.getArticles().subscribe((pubs) => {
+    this.PS.getPublications().subscribe((pubs) => {
       this.nb_articles = pubs.length;
     });
     this.ES.getFullYearsEvents(2020, 2025).subscribe((events) => {
       // console.log(events);
       this.barChartData = [
-        { data: [...events], label: 'Events' },
+        { data: [...events], label: 'Evenements' },
         //{ data: [28, 48, 40, 19, 86, 27, 90], label: 'Invités' }
       ];
     });

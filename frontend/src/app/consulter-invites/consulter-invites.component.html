@@ -1,16 +1,21 @@
-<h2 mat-dialog-title>Invites</h2>
+
+<h2 mat-dialog-title>Invités</h2>
 <mat-dialog-content fxLayout="column" fxLayoutAlign="space-evenly center">
   <mat-chip-set
-    class="example-chip"
-    cdkDropList
-    cdkDropListOrientation="horizontal"
-    (cdkDropListDropped)="drop($event)"
+  class="example-chip"
+  cdkDropList
+  cdkDropListOrientation="horizontal"
+  (cdkDropListDropped)="drop($event)"
+>
+  <mat-chip
+    class="example-box"
+    cdkDrag
+    *ngFor="let member of members"
   >
-    <mat-chip class="example-box" cdkDrag *ngFor="let member of members">
-      {{ member.name }}
-    </mat-chip>
-  </mat-chip-set>
+    {{member.prenom}}{{ member.nom }}
+  </mat-chip>
+</mat-chip-set>
 </mat-dialog-content>
-<mat-dialog-actions fxLayout="row" fxLayoutAlign="space-evenly center">
-  <button mat-raised-button color="primary" (click)="close()">Quitter</button>
+<mat-dialog-actions fxLayout="row" fxLayoutAlign="space-evenly center" >
+  <button mat-raised-button color="primary" (click)="close()"> Quitter</button>
 </mat-dialog-actions>

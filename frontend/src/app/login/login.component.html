@@ -1,18 +1,19 @@
-<div class="login-container">
-  <mat-card class="login-card">
-    <mat-card-header>
-      <mat-card-title>Welcome</mat-card-title>
-      <mat-card-subtitle>Sign in to continue</mat-card-subtitle>
-    </mat-card-header>
-    <mat-card-content>
-      <button mat-raised-button class="google-signin-button" (click)="signIn()">
-        <img
-          src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg"
-          alt="Google logo"
-          class="google-icon"
-        />
-        Sign in with Google
-      </button>
-    </mat-card-content>
-  </mat-card>
+
+<div fxLayout="column" fxLayoutAlign="space-evenly center">
+<div class="custom-card">
+  <div class="card-content">
+    <div class="lab-text">Lab</div>
+  </div>
+</div>
+
+<div class="custom-card">
+  <div class="card-content">
+    <div class="welcome-text">
+      <p>Welcome to our Lab</p>
+    </div>
+    <button mat-raised-button class="google-button" (click)="tryGoogleLogin()">
+      Sign in with Google
+    </button>
+  </div>
+</div>
 </div>

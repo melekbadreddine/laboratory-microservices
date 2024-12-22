@@ -5,10 +5,10 @@ import {
   CdkDrag,
   CdkDropList,
 } from '@angular/cdk/drag-drop';
+import { Member } from 'src/models/member';
 import { MemberService } from 'src/services/member.service';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatChipsModule } from '@angular/material/chips';
-import { Member } from 'src/models/Member';
 
 @Component({
   selector: 'app-consulter-invites',

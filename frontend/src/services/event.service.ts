@@ -2,26 +2,25 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { API, GLOBAL } from 'src/app/app-config';
 import { Observable } from 'rxjs';
-import { Evt } from 'src/models/Event';
+import { Evenement } from 'src/models/event';
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: 'root'
 })
-export class EventService {
-  // tab: enseEventignant[] = GLOBAL._DB.events;
+export class EvenementService {
+
+  // tab: enseEvenementignant[] = GLOBAL._DB.events;
   //Injection de HTTP CLIENT
   constructor(private httpClient: HttpClient) {}
 
-  getEvents(): Observable<Evt[]> {
-    return this.httpClient.get<Evt[]>(`${API.url}/${API.event}/events`);
+  getEvenements(): Observable<Evenement[]>{
+    return this.httpClient.get<Evenement[]>(`${API.url}/${API.event}/events`);
     //return new Observable((observer) => {observer.next(this.tab)});
   }
 
-  saveEvent(event: Evt): Observable<Evt> {
-    return this.httpClient.post<Evt>(
-      `${API.url}/${API.event}/events/create`,
-      event
-    );
+  saveEvenement(event: Evenement): Observable<Evenement>{
+
+    return this.httpClient.post<Evenement>(`${API.url}/${API.event}/events/create`, event);
 
     //ken maandekch back-end
 
@@ -30,24 +29,17 @@ export class EventService {
     //return new Observable (observer => {observer.next()});
   }
 
-  updateEvent(event: Evt): Observable<Evt> {
-    return this.httpClient.put<Evt>(
-      `${API.url}/${API.event}/events/${event.id}/update`,
-      event
-    );
+  updateEvenement(event: Evenement): Observable<Evenement>{
+    return this.httpClient.put<Evenement>(`${API.url}/${API.event}/events/${event.id}/update`, event);
   }
 
-  deleteEvent(id: string): Observable<void> {
-    this.httpClient.delete<void>(
-      `${API.url}/${API.member}/members-per-event/${id}/delete`
-    );
-    return this.httpClient.delete<void>(
-      `${API.url}/${API.event}/events/${id}/delete`
-    );
+  deleteEvenement(id: number): Observable<void>{
+    this.httpClient.delete<void>(`${API.url}/${API.member}/members-per-event/${id}/delete`);
+    return this.httpClient.delete<void>(`${API.url}/${API.event}/events/${id}/delete`);
   }
 
-  getEventById(id: string): Observable<Evt> {
-    return this.httpClient.get<Evt>(`${API.url}/${API.event}/events/${id}`);
+  getEvenementById(id: number): Observable<Evenement>{
+    return this.httpClient.get<Evenement>(`${API.url}/${API.event}/events/${id}`);
     //return new Observable((observer) => {observer.next(this.tab.find((event)=>event.id === id))});
   }
 
@@ -55,4 +47,7 @@ export class EventService {
     const url = `${API.url}/${API.event}/events/full-years-events/${startYear}/${endYear}`;
     return this.httpClient.get<number[]>(url);
   }
+
+
 }
+
