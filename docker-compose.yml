@@ -1,53 +1,97 @@
-version: '3.8'
+version: "3.8"
 
 services:
   config-service:
     image: config-service
-    ports: 
-    - "8888:8888"
+    ports:
+      - "8888:8888"
     network_mode: "host"
+
   registry-service:
     image: registry-service
-    ports: 
-    - "8761:8761"
-    depends_on: 
-    - config-service
+    ports:
+      - "8761:8761"
+    depends_on:
+      - config-service
     restart: unless-stopped
     network_mode: "host"
+
   gateway:
     image: gateway
-    ports: 
-    - "9000:9000"
-    depends_on: 
-    - config-service
-    - registry-service
+    ports:
+      - "9000:9000"
+    depends_on:
+      - config-service
+      - registry-service
     restart: unless-stopped
     network_mode: "host"
-  membre-service:
-    image: membre-service
-    depends_on: 
-    - config-service
-    - registry-service
+
+  member-service:
+    image: member-service
+    depends_on:
+      - config-service
+      - registry-service
+      - postgres
     restart: unless-stopped
     network_mode: "host"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/lab2024
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: root
+
   publication-service:
     image: publication-service
-    depends_on: 
-    - config-service
-    - registry-service
+    depends_on:
+      - config-service
+      - registry-service
+      - postgres
     restart: unless-stopped
     network_mode: "host"
-  evenement-service:
-    image: evenement-service
-    depends_on: 
-    - config-service
-    - registry-service
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/lab2024
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: root
+
+  event-service:
+    image: event-service
+    depends_on:
+      - config-service
+      - registry-service
+      - postgres
     restart: unless-stopped
     network_mode: "host"
-  outil-service:
-    image: outil-service
-    depends_on: 
-    - config-service
-    - registry-service
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/lab2024
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: root
+
+  tool-service:
+    image: tool-service
+    depends_on:
+      - config-service
+      - registry-service
+      - postgres
     restart: unless-stopped
     network_mode: "host"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/lab2024
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: root
+
+  postgres:
+    image: postgres:latest
+    container_name: postgres
+    environment:
+      POSTGRES_DB: lab2024
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: root
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    networks:
+      - default
+
+volumes:
+  postgres-data:
+    driver: local
