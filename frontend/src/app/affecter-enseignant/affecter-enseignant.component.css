@@ -1,0 +1,108 @@
+/* Common Dialog Styles */
+.mat-mdc-dialog-container {
+  padding: 1rem;
+  border-radius: 1rem;
+  background: white;
+}
+
+/* Dialog Title */
+.mat-mdc-dialog-title {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #2c3e50;
+  margin: 0 0 1.5rem 0;
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+/* Dialog Content */
+.mat-mdc-dialog-content {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 1rem 0;
+}
+
+.mat-mdc-form-field {
+  width: 100%;
+  min-width: 300px;
+}
+
+/* Dialog Actions */
+.mat-mdc-dialog-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+  padding: 1rem 0 0 0;
+  margin: 0;
+  border-top: 1px solid #ecf0f1;
+}
+
+/* Buttons */
+.mat-mdc-raised-button {
+  height: 40px;
+  min-width: 100px;
+  border-radius: 20px;
+  font-weight: 500;
+}
+
+.mat-mdc-raised-button.mat-primary {
+  background: linear-gradient(135deg, #2193b0 0%, #6dd5ed 100%);
+}
+
+.mat-mdc-raised-button.mat-warn {
+  background: linear-gradient(135deg, #ee0979 0%, #ff6a00 100%);
+}
+
+/* Chips Styling */
+.mat-mdc-chip-set {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  padding: 1rem;
+}
+
+.mat-mdc-chip {
+  background: linear-gradient(135deg, #2193b0 0%, #6dd5ed 100%) !important;
+  color: white !important;
+  font-weight: 500;
+  transition: transform 0.2s ease;
+}
+
+.mat-mdc-chip:hover {
+  transform: translateY(-2px);
+}
+
+.example-chip {
+  max-width: 100%;
+  border-radius: 0.5rem;
+  padding: 1rem;
+  background: #f8f9fa;
+}
+
+.example-box {
+  padding: 0.5rem 1rem;
+  border-radius: 1rem;
+  margin: 0.25rem;
+  cursor: move;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+  .mat-mdc-dialog-container {
+    padding: 0.5rem;
+  }
+
+  .mat-mdc-form-field {
+    min-width: auto;
+  }
+
+  .mat-mdc-dialog-actions {
+    flex-direction: column;
+  }
+
+  .mat-mdc-raised-button {
+    width: 100%;
+  }
+}

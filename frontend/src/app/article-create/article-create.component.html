@@ -1,28 +1,59 @@
-<h2 mat-dialog-title>Tools Form</h2>
+<!-- article-create.component.html -->
+<div class="article-form-dialog">
+  <h2 mat-dialog-title class="dialog-title">
+    <mat-icon>post_add</mat-icon>
+    Add New Article
+  </h2>
 
-<mat-dialog-content [formGroup]="form" fxLayout="column" fxLayoutAlign="space-evenly center">
-  <mat-form-field class="example-full-width" appearance="fill">
-    <mat-label>Titre</mat-label>
-    <input matInput name="titre" formControlName="titre" />
-  </mat-form-field>
-  <mat-form-field>
-    <mat-label>Lien</mat-label>
-    <input matInput name="lien" formControlName="lien" />
-  </mat-form-field>
-  <mat-form-field>
-    <mat-label>Enter a date</mat-label>
-    <input matInput [matDatepicker]="picker" formControlName="date" placeholder="Select a date" />
-    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-    <mat-datepicker #picker></mat-datepicker>
-  </mat-form-field>
-  <mat-form-field class="example-full-width" appearance="fill">
-    <mat-label>Source PDF</mat-label>
-    <input matInput name="sourcepdf" formControlName="sourcepdf" />
-  </mat-form-field>
+  <mat-dialog-content [formGroup]="form" class="dialog-content">
+    <mat-form-field appearance="outline">
+      <mat-label>Article Title</mat-label>
+      <mat-icon matPrefix>title</mat-icon>
+      <input
+        matInput
+        placeholder="Enter article title"
+        formControlName="titre"
+      />
+    </mat-form-field>
 
-</mat-dialog-content>
+    <mat-form-field appearance="outline">
+      <mat-label>Article URL</mat-label>
+      <mat-icon matPrefix>link</mat-icon>
+      <input matInput placeholder="Enter article URL" formControlName="lien" />
+    </mat-form-field>
 
-<mat-dialog-actions fxLayout="row" fxLayoutAlign="space-evenly center" >
-  <button mat-raised-button color="primary" (click)="close()"> Quitter</button>
-  <button mat-raised-button color="warn" (click)="save()"> Soumettre</button>
-</mat-dialog-actions>
+    <mat-form-field appearance="outline">
+      <mat-label>Publication Date</mat-label>
+      <mat-icon matPrefix>event</mat-icon>
+      <input
+        matInput
+        formControlName="date"
+        [matDatepicker]="picker"
+        placeholder="MM/DD/YYYY"
+      />
+      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>PDF Source</mat-label>
+      <mat-icon matPrefix>description</mat-icon>
+      <input
+        matInput
+        placeholder="Enter PDF source"
+        formControlName="sourcepdf"
+      />
+    </mat-form-field>
+  </mat-dialog-content>
+
+  <mat-dialog-actions class="dialog-actions">
+    <button mat-stroked-button (click)="close()">
+      <mat-icon>close</mat-icon>
+      Cancel
+    </button>
+    <button mat-flat-button color="primary" (click)="save()">
+      <mat-icon>save</mat-icon>
+      Save
+    </button>
+  </mat-dialog-actions>
+</div>

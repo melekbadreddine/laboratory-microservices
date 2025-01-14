@@ -3,8 +3,7 @@ import { PublicationService } from 'src/services/publication.service';
 import { EvenementService } from 'src/services/event.service';
 import { MemberService } from 'src/services/member.service';
 import { ToolService } from 'src/services/tool.service';
-import { ChartDataset, ChartOptions } from 'chart.js';
-import { MatLabel } from '@angular/material/form-field';
+import { ChartDataset, ChartOptions, ChartData } from 'chart.js';
 
 @Component({
   selector: 'app-dashboard',

@@ -8,7 +8,6 @@ import * as auth from 'firebase/auth';
 })
 export class AuthService {
   public userClaims: any;
-  //  public userClaims$ = new Subject<any>();
 
   constructor(public afAuth: AngularFireAuth) {}
   userState!: boolean;
@@ -50,16 +49,7 @@ export class AuthService {
 
   setUserClaims(user: any): void {
     this.userClaims = user;
-    //    this.userClaims$.next(user);
   }
-
-  // doFacebookLogin(): Promise<any> {
-  //     return this.afAuth.signInWithPopup(new firebase.auth.FacebookAuthProvider());
-  // }
-  //
-  // doTwitterLogin(): Promise<any> {
-  //     return this.afAuth.signInWithPopup(new firebase.auth.TwitterAuthProvider());
-  // }
 
   doGoogleLogin(): Promise<any> {
     return this.afAuth.signInWithPopup(new auth.GoogleAuthProvider());

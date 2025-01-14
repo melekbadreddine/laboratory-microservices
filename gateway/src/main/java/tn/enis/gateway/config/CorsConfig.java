@@ -12,10 +12,11 @@ public class CorsConfig {
     @Bean
     public CorsWebFilter corsWebFilter() {
         CorsConfiguration config = new CorsConfiguration();
-        config.addAllowedOrigin("http://localhost:4200"); // Replace with your frontend's URL
-        config.addAllowedMethod("*"); // Allow all HTTP methods (GET, POST, etc.)
+        config.addAllowedOriginPattern("*"); // Allow all origins
+        config.addAllowedMethod("*"); // Allow all HTTP methods
         config.addAllowedHeader("*"); // Allow all headers
-        config.setAllowCredentials(true); // Support credentials
+        config.setAllowCredentials(true); // Allow credentials (e.g., cookies)
+        config.setMaxAge(3600L); // Cache preflight response for 1 hour
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", config);

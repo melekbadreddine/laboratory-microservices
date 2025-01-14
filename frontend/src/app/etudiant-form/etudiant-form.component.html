@@ -1,66 +1,105 @@
+<!-- etudiant-form.component.html -->
+<div class="form-container">
+  <div class="form-header">
+    <h1 class="form-title">New Student</h1>
+  </div>
 
-<div class="example-form-container">
-    <h1 class="text-align-center">Nouveau Etudiant</h1>
-  <form [formGroup]="form" (ngSubmit)="OnSubmit()" class="example-form">
+  <form [formGroup]="form" (ngSubmit)="OnSubmit()" class="form-content">
+    <div class="form-section">
+      <h2 class="section-title">Personal Information</h2>
+      <div class="form-grid">
+        <mat-form-field appearance="outline">
+          <mat-label>CIN</mat-label>
+          <mat-icon matPrefix>badge</mat-icon>
+          <input matInput formControlName="cin" placeholder="11143786" />
+        </mat-form-field>
 
-    <div class="form-row">
-      <mat-form-field appearance="fill" class="example-full-width">
-        <mat-label>CIN</mat-label>
-        <input matInput name="cin" formControlName="cin" placeholder="11143786" [value]="form.get('cin')?.value" >
-      </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Last Name</mat-label>
+          <mat-icon matPrefix>person</mat-icon>
+          <input matInput formControlName="nom" placeholder="Doe" />
+        </mat-form-field>
 
-      <mat-form-field appearance="fill" class="example-full-width">
-        <mat-label>Nom</mat-label>
-        <input matInput name="nom" formControlName="nom" placeholder="John" [value]="form.get('nom')?.value" >
-      </mat-form-field>
-
-
-
-      <mat-form-field appearance="fill" class="example-full-width">
-        <mat-label>Prénom</mat-label>
-        <input matInput name="prenom" formControlName="prenom" placeholder="Whick" [value]="form.get('prenom')?.value" >
-      </mat-form-field>
-    </div>
-    <div class="form-row">
-      <mat-form-field appearance="fill" class="example-full-width">
-        <mat-label>Date de naissance</mat-label>
-        <input matInput formControlName="dateNaissance" [matDatepicker]="pickerDateNaissance" [value]="form.get('dateNaissance')?.value | date:'yyyy-MM-dd'">
-        <mat-datepicker-toggle matIconSuffix [for]="pickerDateNaissance"></mat-datepicker-toggle>
-        <mat-datepicker #pickerDateNaissance></mat-datepicker>
-      </mat-form-field>
-
-      <mat-form-field appearance="fill" class="example-full-width">
-        <mat-label>Date d'inscription</mat-label>
-        <input matInput formControlName="dateInscription" [matDatepicker]="pickerDateInscription" [value]="form.get('dateInscription')?.value | date:'yyyy-MM-dd'">
-        <mat-datepicker-toggle matIconSuffix [for]="pickerDateInscription"></mat-datepicker-toggle>
-        <mat-datepicker #pickerDateInscription></mat-datepicker>
-      </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>First Name</mat-label>
+          <mat-icon matPrefix>person_outline</mat-icon>
+          <input matInput formControlName="prenom" placeholder="John" />
+        </mat-form-field>
+      </div>
     </div>
 
-    <div class="form-row">
-      <mat-form-field appearance="fill" class="example-full-width">
-        <mat-label>CV</mat-label>
-        <input matInput name="cv" formControlName="cv" placeholder="facebook.com/dali.mnassar"
-          [value]="form.get('cv')?.value">
-      </mat-form-field>
-      <mat-form-field appearance="fill" class="example-full-width">
-        <mat-label>Diplôme</mat-label>
-        <input matInput name="diplome" formControlName="diplome"  [value]="form.get('diplome')?.value" >
-      </mat-form-field>
-      <mat-form-field appearance="fill" class="example-full-width">
-        <mat-label>Sujet</mat-label>
-        <input matInput name="sujet" formControlName="sujet"  [value]="form.get('sujet')?.value" >
-      </mat-form-field>
+    <div class="form-section">
+      <h2 class="section-title">Dates</h2>
+      <div class="form-grid">
+        <mat-form-field appearance="outline">
+          <mat-label>Birth Date</mat-label>
+          <mat-icon matPrefix>cake</mat-icon>
+          <input
+            matInput
+            formControlName="dateNaissance"
+            [matDatepicker]="pickerDateNaissance"
+          />
+          <mat-datepicker-toggle
+            matSuffix
+            [for]="pickerDateNaissance"
+          ></mat-datepicker-toggle>
+          <mat-datepicker #pickerDateNaissance></mat-datepicker>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Registration Date</mat-label>
+          <mat-icon matPrefix>event</mat-icon>
+          <input
+            matInput
+            formControlName="dateInscription"
+            [matDatepicker]="pickerDateInscription"
+          />
+          <mat-datepicker-toggle
+            matSuffix
+            [for]="pickerDateInscription"
+          ></mat-datepicker-toggle>
+          <mat-datepicker #pickerDateInscription></mat-datepicker>
+        </mat-form-field>
+      </div>
     </div>
 
+    <div class="form-section">
+      <h2 class="section-title">Academic Information</h2>
+      <div class="form-grid">
+        <mat-form-field appearance="outline">
+          <mat-label>CV Link</mat-label>
+          <mat-icon matPrefix>link</mat-icon>
+          <input matInput formControlName="cv" placeholder="URL to CV" />
+        </mat-form-field>
 
+        <mat-form-field appearance="outline">
+          <mat-label>Diploma</mat-label>
+          <mat-icon matPrefix>school</mat-icon>
+          <input matInput formControlName="diplome" />
+        </mat-form-field>
 
-    <div fxLayout="row" fxLayoutAlign="space-evenly center">
-      <button mat-fab extended color="primary" type="submit">
-        <mat-icon>change_history</mat-icon>
-        Submit
+        <mat-form-field appearance="outline">
+          <mat-label>Subject</mat-label>
+          <mat-icon matPrefix>subject</mat-icon>
+          <input matInput formControlName="sujet" />
+        </mat-form-field>
+      </div>
+    </div>
+
+    <div class="form-actions">
+      <button
+        mat-flat-button
+        type="button"
+        class="cancel-button"
+        routerLink="/members"
+      >
+        <mat-icon>close</mat-icon>
+        Cancel
+      </button>
+      <button mat-flat-button type="submit" class="submit-button">
+        <mat-icon>save</mat-icon>
+        Save
       </button>
     </div>
-
   </form>
 </div>

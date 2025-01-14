@@ -1,65 +1,89 @@
-<div fxLayout="row" fxLayoutAlign="center center">
-  <button mat-raised-button (click)="openArticleCreate()">
-    Créer un nouveau article
-  </button>
-</div>
-<div fxLayout="row" fxLayoutAlign="space-evenly center">
-  <h1> Articles </h1>
-  <mat-form-field>
-    <mat-label>Filter</mat-label>
-    <input
-      matInput
-      (keyup)="applyFilter($event)"
-      placeholder="Ex. John/1"
-      #input
-    />
-  </mat-form-field>
+<!-- articles.component.html -->
+<div class="articles-container">
+  <div class="articles-header">
+    <h1 class="articles-title">Research Articles</h1>
+    <div class="header-actions">
+      <mat-form-field class="search-field" appearance="outline">
+        <mat-label>Search Articles</mat-label>
+        <mat-icon matPrefix>search</mat-icon>
+        <input
+          matInput
+          (keyup)="applyFilter($event)"
+          placeholder="Enter keywords"
+          #input
+        />
+      </mat-form-field>
+      <button
+        mat-flat-button
+        class="create-button"
+        (click)="openArticleCreate()"
+      >
+        <mat-icon>post_add</mat-icon>
+        New Article
+      </button>
+    </div>
+  </div>
 
-</div>
-<div class="justify-content">
-<div class="cards mat-elevation-z8">
+  <div class="articles-grid">
+    <mat-card *ngFor="let card of obs | async" class="article-card">
+      <div class="article-card-header">
+        <mat-icon class="article-icon">article</mat-icon>
+        <span class="article-id">Article #{{ card.id }}</span>
+      </div>
 
-  <mat-card *ngFor="let card of obs | async" class="event-card ">
-
-
-        <div class="card-header">
-          <span>Article N° {{ card.id }}</span>
-        </div>
-        <div fxLayout="row" fxLayoutAlign="space-around center" class=" pastel-grad">
-          <div class="card-content" fxLayout="column" fxLayoutAlign="space-around begin" >
-            <p fxLayout="row" fxLayoutAlign="begin center"> <mat-icon>work_outline</mat-icon> <span class="prop">{{card.titre}}</span></p>
-            <p fxLayout="row" fxLayoutAlign="begin center">	<mat-icon>today</mat-icon><span class="prop">{{ card.date }}</span></p>
-            <p fxLayout="row" fxLayoutAlign="begin center">	<mat-icon>today</mat-icon><span class="prop">{{ card.lien }}</span></p>
-            <p fxLayout="row" fxLayoutAlign="begin center"> <mat-icon>polymer</mat-icon> <span class="prop">{{ card.source_pdf }}</span></p>
-
-
+      <mat-card-content class="article-card-content">
+        <div class="article-info">
+          <div class="info-row">
+            <mat-icon>title</mat-icon>
+            <span class="info-label">Title:</span>
+            <span class="info-value">{{ card.titre }}</span>
           </div>
-          <div class="card-content" fxLayout="column" fxLayoutAlign="space-around begin" >
 
-            <button mat-icon-button matTooltip="Voir contributeur" (click)="consulter(card.id)">
-              <mat-icon>gesture</mat-icon>
-            </button>
+          <div class="info-row">
+            <mat-icon>calendar_today</mat-icon>
+            <span class="info-label">Date:</span>
+            <span class="info-value">{{ card.date }}</span>
+          </div>
 
-            <button mat-icon-button matTooltip="Soussigner un créateur"  (click)="affecter(card.id)">
-              <mat-icon>queue</mat-icon>
-            </button>
+          <div class="info-row">
+            <mat-icon>link</mat-icon>
+            <span class="info-label">URL:</span>
+            <span class="info-value">{{ card.lien }}</span>
+          </div>
 
-
+          <div class="info-row">
+            <mat-icon>description</mat-icon>
+            <span class="info-label">PDF:</span>
+            <span class="info-value">{{ card.source_pdf }}</span>
           </div>
         </div>
 
+        <div class="article-actions">
+          <button
+            mat-icon-button
+            color="primary"
+            matTooltip="View Contributors"
+            (click)="consulter(card.id)"
+          >
+            <mat-icon>groups</mat-icon>
+          </button>
+          <button
+            mat-icon-button
+            color="accent"
+            matTooltip="Assign Author"
+            (click)="affecter(card.id)"
+          >
+            <mat-icon>person_add</mat-icon>
+          </button>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
 
-      <!-- Row shown when there is no matching data. -->
-
-
-  </mat-card>
+  <mat-paginator
+    class="custom-paginator"
+    [pageSizeOptions]="[6, 12, 18, 24]"
+    aria-label="Select page of articles"
+  >
+  </mat-paginator>
 </div>
-</div>
-<mat-paginator
-  [pageSizeOptions]="[6, 12, 18, 24]"
-  aria-label="Select page of tools"
-></mat-paginator>
-
-
-
-

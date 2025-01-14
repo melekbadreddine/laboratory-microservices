@@ -1,19 +1,25 @@
-<h1 fxLayout="row" fxLayoutAlign="center center">Création d'un</h1>
-<div fxLayout="row" fxLayoutAlign="space-evenly center" class="widthBtns">
-  <button
-    mat-stroked-button
-    color="accent"
-    class="pastel-grad"
-    routerLink="/etudiant/create"
-  >
-    nouveau etudiant
-  </button>
-  <button
-    mat-stroked-button
-    color="warn"
-    class="pastel-grad"
-    routerLink="/enseignant/create"
-  >
-    nouveau enseignant
-  </button>
+<!-- member-form.component.html -->
+<div class="form-container">
+  <div class="form-header">
+    <h1 class="form-title">Create New Member</h1>
+  </div>
+
+  <div class="button-container">
+    <button
+      mat-flat-button
+      class="create-button student-button"
+      routerLink="/etudiant/create"
+    >
+      <mat-icon>school</mat-icon>
+      New Student
+    </button>
+    <button
+      mat-flat-button
+      class="create-button teacher-button"
+      routerLink="/enseignant/create"
+    >
+      <mat-icon>assignment_ind</mat-icon>
+      New Teacher
+    </button>
+  </div>
 </div>

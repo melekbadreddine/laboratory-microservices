@@ -1,64 +1,79 @@
-<div fxLayout="row" fxLayoutAlign="center center">
-  <button mat-raised-button (click)="openToolCreate()">
-    Créer un nouveau outil
-  </button>
-</div>
-<div fxLayout="row" fxLayoutAlign="space-evenly center">
-  <h1> Outils </h1>
-  <mat-form-field>
-    <mat-label>Filter</mat-label>
-    <input
-      matInput
-      (keyup)="applyFilter($event)"
-      placeholder="Ex. John/1"
-      #input
-    />
-  </mat-form-field>
+<!-- tools.component.html -->
+<div class="tools-container">
+  <div class="tools-header">
+    <h1 class="tools-title">Laboratory Tools</h1>
+    <div class="header-actions">
+      <mat-form-field class="search-field" appearance="outline">
+        <mat-label>Search Tools</mat-label>
+        <mat-icon matPrefix>search</mat-icon>
+        <input
+          matInput
+          (keyup)="applyFilter($event)"
+          placeholder="Ex. Microscope"
+          #input
+        />
+      </mat-form-field>
+      <button mat-flat-button class="create-button" (click)="openToolCreate()">
+        <mat-icon>add</mat-icon>
+        New Tool
+      </button>
+    </div>
+  </div>
 
-</div>
-<div class="justify-content">
-<div class="cards mat-elevation-z8">
+  <div class="tools-grid">
+    <mat-card *ngFor="let card of obs | async" class="tool-card">
+      <div class="tool-card-header">
+        <mat-icon class="tool-icon">engineering</mat-icon>
+        <span class="tool-id">Tool #{{ card.id }}</span>
+      </div>
 
-  <mat-card *ngFor="let card of obs | async" class="event-card ">
-
-
-        <div class="card-header">
-          <span>Outil N° {{ card.id }}</span>
-        </div>
-        <div fxLayout="row" fxLayoutAlign="space-around center" class=" pastel-grad">
-          <div class="card-content" fxLayout="column" fxLayoutAlign="space-around begin" >
-            <p fxLayout="row" fxLayoutAlign="begin center"> <mat-icon>work_outline</mat-icon> <span class="prop">{{card.nom}}</span></p>
-            <p fxLayout="row" fxLayoutAlign="begin center">	<mat-icon>today</mat-icon><span class="prop">{{ card.date }}</span></p>
-            <p fxLayout="row" fxLayoutAlign="begin center"> <mat-icon>polymer</mat-icon> <span class="prop">{{ card.source }}</span></p>
-
-
+      <mat-card-content class="tool-card-content">
+        <div class="tool-info">
+          <div class="info-row">
+            <mat-icon>precision_manufacturing</mat-icon>
+            <span class="info-label">Name:</span>
+            <span class="info-value">{{ card.nom }}</span>
           </div>
-          <div class="card-content" fxLayout="column" fxLayoutAlign="space-around begin" >
 
-            <button mat-icon-button matTooltip="Voir contributeur" (click)="consulter(card.id)">
-              <mat-icon>gesture</mat-icon>
-            </button>
+          <div class="info-row">
+            <mat-icon>calendar_today</mat-icon>
+            <span class="info-label">Date:</span>
+            <span class="info-value">{{ card.date }}</span>
+          </div>
 
-            <button mat-icon-button matTooltip="Soussigner un créateur"  (click)="affecter(card.id)">
-              <mat-icon>queue</mat-icon>
-            </button>
-
-
+          <div class="info-row">
+            <mat-icon>link</mat-icon>
+            <span class="info-label">Source:</span>
+            <span class="info-value">{{ card.source }}</span>
           </div>
         </div>
 
+        <div class="tool-actions">
+          <button
+            mat-icon-button
+            color="primary"
+            matTooltip="View Contributors"
+            (click)="consulter(card.id)"
+          >
+            <mat-icon>people_outline</mat-icon>
+          </button>
+          <button
+            mat-icon-button
+            color="accent"
+            matTooltip="Assign Creator"
+            (click)="affecter(card.id)"
+          >
+            <mat-icon>person_add</mat-icon>
+          </button>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
 
-      <!-- Row shown when there is no matching data. -->
-
-
-  </mat-card>
+  <mat-paginator
+    class="custom-paginator"
+    [pageSizeOptions]="[6, 12, 18, 24]"
+    aria-label="Select page of tools"
+  >
+  </mat-paginator>
 </div>
-</div>
-<mat-paginator
-  [pageSizeOptions]="[6, 12, 18, 24]"
-  aria-label="Select page of tools"
-></mat-paginator>
-
-
-
-

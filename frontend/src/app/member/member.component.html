@@ -1,13 +1,22 @@
-<div fxLayout="row" fxLayoutAlign="center center">
-  <button mat-raised-button routerLink="create">créer un nouveau membre</button>
-</div>
+<!-- member.component.html -->
+<div class="members-container">
+  <div class="members-header">
+    <h1 class="members-title">Laboratory Members</h1>
+    <div class="header-actions">
+      <button mat-flat-button class="create-button" routerLink="create">
+        <mat-icon>person_add</mat-icon>
+        New Member
+      </button>
+    </div>
+  </div>
 
-<div fxLayout="row" fxLayoutAlign="center center">
-  <div class="example-container mat-elevation-z8">
-    <div fxLayout="row" fxLayoutAlign="space-evenly center">
-      <h1> Enseignants </h1>
-      <mat-form-field>
-        <mat-label>Filter</mat-label>
+  <!-- Teachers Section -->
+  <div class="members-section">
+    <div class="section-header">
+      <h2 class="section-title">Teachers</h2>
+      <mat-form-field class="search-field" appearance="outline">
+        <mat-label>Search Teachers</mat-label>
+        <mat-icon matPrefix>search</mat-icon>
         <input
           matInput
           (keyup)="applyFilterOnEnseignants($event)"
@@ -15,83 +24,107 @@
           #input
         />
       </mat-form-field>
-
     </div>
-    <div class="mat-elevation-z8">
-      <table mat-table [dataSource]="enseignantSource" class="pastel-grad" matSort>
-        <ng-container matColumnDef="id">
-          <th mat-header-cell *matHeaderCellDef>ID</th>
-          <td mat-cell *matCellDef="let element">{{ element.id }}</td>
-        </ng-container>
+
+    <div class="table-container">
+      <table
+        mat-table
+        [dataSource]="enseignantSource"
+        matSort
+        class="members-table"
+      >
         <ng-container matColumnDef="cin">
           <th mat-header-cell *matHeaderCellDef>CIN</th>
           <td mat-cell *matCellDef="let element">{{ element.cin }}</td>
         </ng-container>
+
         <ng-container matColumnDef="nom">
-          <th mat-header-cell *matHeaderCellDef>NOM</th>
+          <th mat-header-cell *matHeaderCellDef>Name</th>
           <td mat-cell *matCellDef="let element">{{ element.nom }}</td>
         </ng-container>
+
         <ng-container matColumnDef="prenom">
-          <th mat-header-cell *matHeaderCellDef>PRENOM</th>
+          <th mat-header-cell *matHeaderCellDef>First Name</th>
           <td mat-cell *matCellDef="let element">{{ element.prenom }}</td>
         </ng-container>
+
         <ng-container matColumnDef="dateNaissance">
-          <th mat-header-cell *matHeaderCellDef>DATE NAISSANCE</th>
-          <td mat-cell *matCellDef="let element">{{ element.dateNaissance }}</td>
+          <th mat-header-cell *matHeaderCellDef>Birth Date</th>
+          <td mat-cell *matCellDef="let element">
+            {{ element.dateNaissance }}
+          </td>
         </ng-container>
+
         <ng-container matColumnDef="cv">
           <th mat-header-cell *matHeaderCellDef>CV</th>
           <td mat-cell *matCellDef="let element">
-            <a href="{{ element.cv }}" mat-icon-button color="primary">
-              <mat-icon color="accent">picture_as_pdf</mat-icon>
+            <a href="{{ element.cv }}" mat-icon-button class="cv-button">
+              <mat-icon>description</mat-icon>
             </a>
           </td>
         </ng-container>
+
         <ng-container matColumnDef="grade">
-          <th mat-header-cell *matHeaderCellDef>GRADE</th>
+          <th mat-header-cell *matHeaderCellDef>Grade</th>
           <td mat-cell *matCellDef="let element">{{ element.grade }}</td>
         </ng-container>
+
         <ng-container matColumnDef="etablissement">
-          <th mat-header-cell *matHeaderCellDef>ETABLISSEMENT</th>
-          <td mat-cell *matCellDef="let element">{{ element.etablissement }}</td>
+          <th mat-header-cell *matHeaderCellDef>Institution</th>
+          <td mat-cell *matCellDef="let element">
+            {{ element.etablissement }}
+          </td>
         </ng-container>
 
-        <ng-container matColumnDef="actions" stickyEnd>
+        <ng-container matColumnDef="actions">
           <th mat-header-cell *matHeaderCellDef></th>
           <td mat-cell *matCellDef="let element">
-            <button
-              routerLink="enseignant/{{ element.id }}/edit"
-              mat-icon-button
-            
-            >
-              <mat-icon>edit</mat-icon>
-            </button>
-            <button (click)="deleteEnseignant(element.id)" mat-icon-button>
-              <mat-icon>delete</mat-icon>
-            </button>
+            <div class="action-buttons">
+              <button
+                mat-icon-button
+                color="primary"
+                routerLink="enseignant/{{ element.id }}/edit"
+              >
+                <mat-icon>edit</mat-icon>
+              </button>
+              <button
+                mat-icon-button
+                color="warn"
+                (click)="deleteEnseignant(element.id)"
+              >
+                <mat-icon>delete</mat-icon>
+              </button>
+            </div>
           </td>
         </ng-container>
 
         <tr mat-header-row *matHeaderRowDef="enseignantColumns"></tr>
         <tr mat-row *matRowDef="let row; columns: enseignantColumns"></tr>
-        <!-- Row shown when there is no matching data. -->
+
         <tr class="mat-row" *matNoDataRow>
-          <td class="mat-cell" colspan="4">
+          <td class="mat-cell" colspan="8">
             No data matching the filter "{{ input.value }}"
           </td>
         </tr>
       </table>
-      <mat-paginator #enseignantPaginator [pageSizeOptions]="[5, 10, 25, 100]" aria-label="Selectionner la page d'enseignants"></mat-paginator>
+
+      <mat-paginator
+        #enseignantPaginator
+        class="custom-paginator"
+        [pageSizeOptions]="[5, 10, 25, 100]"
+        aria-label="Select page of teachers"
+      >
+      </mat-paginator>
     </div>
   </div>
-</div>
- <hr>
- <div fxLayout="row" fxLayoutAlign="center center">
-  <div class="example-container mat-elevation-z8">
-    <div fxLayout="row" fxLayoutAlign="space-evenly center">
-      <h1> Etudiants </h1>
-      <mat-form-field>
-        <mat-label>Filter</mat-label>
+
+  <!-- Students Section -->
+  <div class="members-section">
+    <div class="section-header">
+      <h2 class="section-title">Students</h2>
+      <mat-form-field class="search-field" appearance="outline">
+        <mat-label>Search Students</mat-label>
+        <mat-icon matPrefix>search</mat-icon>
         <input
           matInput
           (keyup)="applyFilterOnEtudiants($event)"
@@ -99,94 +132,131 @@
           #input
         />
       </mat-form-field>
-
     </div>
-    <div class="mat-elevation-z8">
-      <table mat-table [dataSource]="etudiantSource" class="pastel-grad" matSort>
-        <!-- <ng-container matColumnDef="id">
-          <th mat-header-cell *matHeaderCellDef>ID</th>
-          <td mat-cell *matCellDef="let element">{{ element.id }}</td>
-        </ng-container> -->
+
+    <div class="table-container">
+      <table
+        mat-table
+        [dataSource]="etudiantSource"
+        matSort
+        class="members-table"
+      >
+        <!-- Similar column definitions for students table -->
         <ng-container matColumnDef="cin">
           <th mat-header-cell *matHeaderCellDef>CIN</th>
           <td mat-cell *matCellDef="let element">{{ element.cin }}</td>
         </ng-container>
+
         <ng-container matColumnDef="nom">
-          <th mat-header-cell *matHeaderCellDef>NOM</th>
+          <th mat-header-cell *matHeaderCellDef>Name</th>
           <td mat-cell *matCellDef="let element">{{ element.nom }}</td>
         </ng-container>
+
         <ng-container matColumnDef="prenom">
-          <th mat-header-cell *matHeaderCellDef>PRENOM</th>
+          <th mat-header-cell *matHeaderCellDef>First Name</th>
           <td mat-cell *matCellDef="let element">{{ element.prenom }}</td>
         </ng-container>
+
         <ng-container matColumnDef="dateNaissance">
-          <th mat-header-cell *matHeaderCellDef>DATE NAISSANCE</th>
-          <td mat-cell *matCellDef="let element">{{ element.dateNaissance }}</td>
+          <th mat-header-cell *matHeaderCellDef>Birth Date</th>
+          <td mat-cell *matCellDef="let element">
+            {{ element.dateNaissance }}
+          </td>
         </ng-container>
+
         <ng-container matColumnDef="cv">
           <th mat-header-cell *matHeaderCellDef>CV</th>
           <td mat-cell *matCellDef="let element">
-            <a href="{{ element.cv }}" mat-icon-button color="primary">
-              <mat-icon color="accent">picture_as_pdf</mat-icon>
+            <a href="{{ element.cv }}" mat-icon-button class="cv-button">
+              <mat-icon>description</mat-icon>
             </a>
           </td>
         </ng-container>
-        <ng-container matColumnDef="encadrant">
-          <th mat-header-cell *matHeaderCellDef>ENCADRANT</th>
-          <td mat-cell *matCellDef="let element">
-            <ng-container *ngIf="element.encadrant != null; else affecterButton">
-              <button mat-stroked-button color="accent" (click)="affecter(element)">
-                <mat-icon>pregnant_woman</mat-icon>
-              </button> {{ element.encadrant.prenom }} {{ element.encadrant.nom }}
-            </ng-container>
-            <ng-template #affecterButton>
-              <button mat-stroked-button color="accent" (click)="affecter(element)">
-                <mat-icon>pregnant_woman</mat-icon> Affecter
-              </button>
-            </ng-template>
-          </td>
 
-        </ng-container>
         <ng-container matColumnDef="dateInscription">
-          <th mat-header-cell *matHeaderCellDef>DATE INSCRIPTION</th>
-          <td mat-cell *matCellDef="let element">{{ element.dateInscription }}</td>
+          <th mat-header-cell *matHeaderCellDef>Registration Date</th>
+          <td mat-cell *matCellDef="let element">
+            {{ element.dateInscription }}
+          </td>
         </ng-container>
+
         <ng-container matColumnDef="diplome">
-          <th mat-header-cell *matHeaderCellDef>DIPLOME</th>
+          <th mat-header-cell *matHeaderCellDef>Diploma</th>
           <td mat-cell *matCellDef="let element">{{ element.diplome }}</td>
         </ng-container>
+
         <ng-container matColumnDef="sujet">
-          <th mat-header-cell *matHeaderCellDef>SUJET</th>
+          <th mat-header-cell *matHeaderCellDef>Subject</th>
           <td mat-cell *matCellDef="let element">{{ element.sujet }}</td>
         </ng-container>
-        <ng-container matColumnDef="actions" stickyEnd>
+
+        <ng-container matColumnDef="actions">
           <th mat-header-cell *matHeaderCellDef></th>
-          <td mat-cell *matCellDef="let element" fxLayout="column" fxLayoutAlign="space-evenly center" >
-            <button
-              routerLink="etudiant/{{ element.id }}/edit"
-              mat-icon-button
-              
+          <td mat-cell *matCellDef="let element">
+            <div class="action-buttons">
+              <button
+                mat-icon-button
+                color="primary"
+                routerLink="etudiant/{{ element.id }}/edit"
+              >
+                <mat-icon>edit</mat-icon>
+              </button>
+              <button
+                mat-icon-button
+                color="warn"
+                (click)="deleteEtudiant(element.id)"
+              >
+                <mat-icon>delete</mat-icon>
+              </button>
+            </div>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="encadrant">
+          <th mat-header-cell *matHeaderCellDef>Supervisor</th>
+          <td mat-cell *matCellDef="let element">
+            <ng-container
+              *ngIf="element.encadrant != null; else affecterButton"
             >
-              <mat-icon>edit</mat-icon>
-            </button>
-            <button (click)="deleteEtudiant(element.id)" mat-icon-button>
-              <mat-icon>delete</mat-icon>
-            </button>
+              <button
+                mat-stroked-button
+                class="supervisor-button"
+                (click)="affecter(element)"
+              >
+                <mat-icon>supervisor_account</mat-icon>
+                {{ element.encadrant.prenom }} {{ element.encadrant.nom }}
+              </button>
+            </ng-container>
+            <ng-template #affecterButton>
+              <button
+                mat-stroked-button
+                class="assign-button"
+                (click)="affecter(element)"
+              >
+                <mat-icon>person_add</mat-icon>
+                Assign
+              </button>
+            </ng-template>
           </td>
         </ng-container>
 
         <tr mat-header-row *matHeaderRowDef="etudiantColumns"></tr>
         <tr mat-row *matRowDef="let row; columns: etudiantColumns"></tr>
-        <!-- Row shown when there is no matching data. -->
+
         <tr class="mat-row" *matNoDataRow>
-          <td class="mat-cell" colspan="4">
+          <td class="mat-cell" colspan="9">
             No data matching the filter "{{ input.value }}"
           </td>
         </tr>
       </table>
-      <mat-paginator #etudiantPaginator [pageSizeOptions]="[ 5, 10, 25, 100]" aria-label="Selectionner la page d'etudiants"></mat-paginator>
+
+      <mat-paginator
+        #etudiantPaginator
+        class="custom-paginator"
+        [pageSizeOptions]="[5, 10, 25, 100]"
+        aria-label="Select page of students"
+      >
+      </mat-paginator>
     </div>
   </div>
 </div>
-
-

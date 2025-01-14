@@ -1,19 +1,32 @@
-
-<div fxLayout="column" fxLayoutAlign="space-evenly center">
-<div class="custom-card">
-  <div class="card-content">
-    <div class="lab-text">Lab</div>
-  </div>
-</div>
-
-<div class="custom-card">
-  <div class="card-content">
-    <div class="welcome-text">
-      <p>Welcome to our Lab</p>
+<!-- login.component.html -->
+<div class="login-container">
+  <div class="login-card primary-card">
+    <div class="card-content">
+      <div class="lab-logo">
+        <mat-icon class="lab-icon">science</mat-icon>
+        <span class="lab-text">LabManager</span>
+      </div>
     </div>
-    <button mat-raised-button class="google-button" (click)="tryGoogleLogin()">
-      Sign in with Google
-    </button>
   </div>
-</div>
+  <div class="login-card secondary-card">
+    <div class="card-content">
+      <div class="welcome-text">
+        <h1>Welcome to LabManager!</h1>
+        <p>Streamline your laboratory workflow</p>
+      </div>
+      <button
+        mat-raised-button
+        class="google-button"
+        (click)="tryGoogleLogin()"
+      >
+        <img
+          src="../../assets/img/google-icon.png"
+          alt="Google Icon"
+          class="google-icon"
+        />
+        <mat-icon>google</mat-icon>
+        <span>Sign in with Google</span>
+      </button>
+    </div>
+  </div>
 </div>

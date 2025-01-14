@@ -1,25 +1,27 @@
 import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
-import { GLOBAL } from '../app-config';
-import { Member } from 'src/models/member';
-import { MemberService } from 'src/services/member.service';
-import { MatSort } from '@angular/material/sort';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
+import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
+import { Router } from '@angular/router';
+
+import { Member } from 'src/models/member';
 import { Enseignant } from 'src/models/enseignant';
 import { Etudiant } from 'src/models/etudiant';
-import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
+import { MemberService } from 'src/services/member.service';
 import { AffecterEnseignantComponent } from '../affecter-enseignant/affecter-enseignant.component';
-import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-member',
   templateUrl: './member.component.html',
   styleUrls: ['./member.component.css'],
 })
-export class MemberComponent implements AfterViewInit, OnInit {
-  enseignantSource!: MatTableDataSource<Enseignant>; // db.tab.enseignants
+export class MemberComponent implements OnInit, AfterViewInit {
+  // Data sources for tables
+  enseignantSource!: MatTableDataSource<Enseignant>;
   etudiantSource!: MatTableDataSource<Etudiant>;
 
+  // Column definitions
   enseignantColumns: string[] = [
     'cin',
     'nom',
@@ -30,6 +32,7 @@ export class MemberComponent implements AfterViewInit, OnInit {
     'etablissement',
     'actions',
   ];
+
   etudiantColumns: string[] = [
     'cin',
     'nom',
@@ -43,42 +46,60 @@ export class MemberComponent implements AfterViewInit, OnInit {
     'actions',
   ];
 
+  // ViewChild decorators for pagination and sorting
   @ViewChild('enseignantPaginator') enseignantPaginator!: MatPaginator;
   @ViewChild('etudiantPaginator') etudiantPaginator!: MatPaginator;
-
-  loadMembers(): void {
-    // Enseignants
-    this.MS.getEnseignants().subscribe((members) => {
-      this.enseignantSource = new MatTableDataSource(members);
-
-      if (this.enseignantSource) {
-        console.log(this.enseignantSource.data);
-        this.enseignantSource.paginator = this.enseignantPaginator; // Assign the paginator
-      }
-    });
-
-    // Etudiants
-    this.MS.getEtudiants().subscribe((members) => {
-      this.etudiantSource = new MatTableDataSource(members);
-      if (this.etudiantSource) {
-        console.log(this.etudiantSource.data);
-        this.etudiantSource.paginator = this.etudiantPaginator; // Assign the paginator
-      }
-    });
-  }
+  @ViewChild('enseignantSort') enseignantSort!: MatSort;
+  @ViewChild('etudiantSort') etudiantSort!: MatSort;
 
   constructor(
-    private MS: MemberService,
+    private memberService: MemberService,
     private dialog: MatDialog,
     private router: Router
   ) {}
 
-  ngOnInit() {
+  ngOnInit(): void {
+    // Initialize data sources
+    this.enseignantSource = new MatTableDataSource<Enseignant>([]);
+    this.etudiantSource = new MatTableDataSource<Etudiant>([]);
     this.loadMembers();
   }
-  ngAfterViewInit() {}
 
-  applyFilterOnEnseignants(event: Event) {
+  ngAfterViewInit(): void {
+    // Set up sorting and pagination after view initialization
+    if (this.enseignantSource) {
+      this.enseignantSource.sort = this.enseignantSort;
+      this.enseignantSource.paginator = this.enseignantPaginator;
+    }
+    if (this.etudiantSource) {
+      this.etudiantSource.sort = this.etudiantSort;
+      this.etudiantSource.paginator = this.etudiantPaginator;
+    }
+  }
+
+  loadMembers(): void {
+    // Load teachers
+    this.memberService.getEnseignants().subscribe({
+      next: (teachers) => {
+        this.enseignantSource.data = teachers;
+        this.enseignantSource.paginator = this.enseignantPaginator;
+        this.enseignantSource.sort = this.enseignantSort;
+      },
+      error: (error) => console.error('Error loading teachers:', error),
+    });
+
+    // Load students
+    this.memberService.getEtudiants().subscribe({
+      next: (students) => {
+        this.etudiantSource.data = students;
+        this.etudiantSource.paginator = this.etudiantPaginator;
+        this.etudiantSource.sort = this.etudiantSort;
+      },
+      error: (error) => console.error('Error loading students:', error),
+    });
+  }
+
+  applyFilterOnEnseignants(event: Event): void {
     const filterValue = (event.target as HTMLInputElement).value;
     this.enseignantSource.filter = filterValue.trim().toLowerCase();
 
@@ -87,7 +108,7 @@ export class MemberComponent implements AfterViewInit, OnInit {
     }
   }
 
-  applyFilterOnEtudiants(event: Event) {
+  applyFilterOnEtudiants(event: Event): void {
     const filterValue = (event.target as HTMLInputElement).value;
     this.etudiantSource.filter = filterValue.trim().toLowerCase();
 
@@ -96,40 +117,51 @@ export class MemberComponent implements AfterViewInit, OnInit {
     }
   }
 
-  affecter(etudiant: Member): void {
+  affecter(etudiant: Etudiant): void {
     const dialogConfig = new MatDialogConfig();
-
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = true;
+    dialogConfig.width = '400px';
 
     const dialogRef = this.dialog.open(
       AffecterEnseignantComponent,
       dialogConfig
     );
 
-    dialogRef.afterClosed().subscribe((data) => {
-      console.log(data);
-      this.MS.affectEtudiantToEnseignant(etudiant, data.encadrant).subscribe(
-        () => {
-          // or manually add the tool to the existing list
-          // this.dataSource.push(toolNew);
-          // this.router.navigate(['/dashboard']);
-          // Close the dialog
-          location.reload();
-        }
-      );
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result && result.encadrant) {
+        this.memberService
+          .affectEtudiantToEnseignant(etudiant, result.encadrant)
+          .subscribe({
+            next: () => {
+              this.loadMembers(); // Reload data instead of page refresh
+            },
+            error: (error) =>
+              console.error('Error assigning supervisor:', error),
+          });
+      }
     });
   }
 
-  deleteEnseignant(memberId: number) {
-    this.MS.deleteEnseignant(memberId).subscribe(() => {
-      this.loadMembers();
-    });
+  deleteEnseignant(memberId: number): void {
+    if (confirm('Are you sure you want to delete this teacher?')) {
+      this.memberService.deleteEnseignant(memberId).subscribe({
+        next: () => {
+          this.loadMembers();
+        },
+        error: (error) => console.error('Error deleting teacher:', error),
+      });
+    }
   }
 
-  deleteEtudiant(memberId: number) {
-    this.MS.deleteEtudiant(memberId).subscribe(() => {
-      this.loadMembers();
-    });
+  deleteEtudiant(memberId: number): void {
+    if (confirm('Are you sure you want to delete this student?')) {
+      this.memberService.deleteEtudiant(memberId).subscribe({
+        next: () => {
+          this.loadMembers();
+        },
+        error: (error) => console.error('Error deleting student:', error),
+      });
+    }
   }
 }

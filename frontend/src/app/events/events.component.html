@@ -1,59 +1,87 @@
-<div fxLayout="row" fxLayoutAlign="center center">
-  <button mat-raised-button  routerLink="create">
-    Créer une nouvelle évènement
-  </button>
-</div>
+<!-- events.component.html -->
+<div class="events-container">
+  <div class="events-header">
+    <h1 class="events-title">Events</h1>
+    <div class="header-actions">
+      <mat-form-field class="search-field" appearance="outline">
+        <mat-label>Search Events</mat-label>
+        <mat-icon matPrefix>search</mat-icon>
+        <input
+          matInput
+          (keyup)="applyFilter($event)"
+          placeholder="Ex. Conference"
+          #input
+        />
+      </mat-form-field>
+      <button mat-flat-button class="create-button" (click)="openEventCreate()">
+        <mat-icon>event_note</mat-icon>
+        New Event
+      </button>
+    </div>
+  </div>
 
-<div fxLayout="row" fxLayoutAlign="space-evenly center">
-  <h1> Evenements </h1>
-  <mat-form-field>
-    <mat-label>Filter</mat-label>
-    <input
-      matInput
-      (keyup)="applyFilter($event)"
-      placeholder="Ex. John/1"
-      #input
-    />
-  </mat-form-field>
+  <div class="events-grid">
+    <mat-card *ngFor="let card of obs | async" class="event-card">
+      <div class="event-card-header">
+        <mat-icon class="event-icon">event</mat-icon>
+        <span class="event-title">{{ card.titre }}</span>
+      </div>
 
-</div>
-<div class="justify-content">
-<div class="cards mat-elevation-z8">
+      <mat-card-content class="event-card-content">
+        <div class="event-info">
+          <div class="info-row">
+            <mat-icon>calendar_today</mat-icon>
+            <span class="info-label">Start:</span>
+            <span class="info-value">{{ card.dateDebut | date }}</span>
+          </div>
 
-    <mat-card *ngFor="let card of obs | async" class="event-card pastel-grad">
-      <mat-card-header>
+          <div class="info-row">
+            <mat-icon>calendar_today</mat-icon>
+            <span class="info-label">End:</span>
+            <span class="info-value">{{ card.dateFin | date }}</span>
+          </div>
 
-        <mat-card-title>{{ card.titre }}</mat-card-title>
-        <mat-card-subtitle class="dates" fxLayout="row" fxLayoutAlign="space-around center" >
-          <mat-icon>event</mat-icon>
-          {{ card.dateDebut | date }} - {{ card.dateFin | date }}
-          <mat-icon> location_on</mat-icon> {{ card.lieu }}
-          <button mat-icon-button matTooltip="Afficher la liste des invités" color="green" (click)="consulter(card.id)">
-            <mat-icon>spa</mat-icon>
+          <div class="info-row">
+            <mat-icon>location_on</mat-icon>
+            <span class="info-label">Location:</span>
+            <span class="info-value">{{ card.lieu }}</span>
+          </div>
+        </div>
+
+        <div class="event-actions">
+          <button
+            mat-icon-button
+            color="primary"
+            matTooltip="View Guests"
+            (click)="consulter(card.id)"
+          >
+            <mat-icon>groups</mat-icon>
           </button>
-        </mat-card-subtitle>
-
-      </mat-card-header>
-      <mat-card-content>
-
+          <button
+            mat-icon-button
+            color="accent"
+            matTooltip="Invite"
+            (click)="affecter(card.id)"
+          >
+            <mat-icon>person_add</mat-icon>
+          </button>
+          <button
+            mat-icon-button
+            color="warn"
+            matTooltip="Delete"
+            (click)="delete(card.id)"
+          >
+            <mat-icon>delete</mat-icon>
+          </button>
+        </div>
       </mat-card-content>
-      <mat-card-actions fxLayout="row" fxLayoutAlign="space center">
-        <!-- <button mat-icon-button matTooltip="Modifier" routerLink="{{ card.id }}/edit"  >
-          <mat-icon>edit</mat-icon>
-        </button> -->
-        <button mat-icon-button matTooltip="Inviter"  (click)="affecter(card.id)" >
-          <mat-icon>group_add</mat-icon>
-        </button>
-        <button mat-icon-button matTooltip="Supprimer" (click)="delete(card.id)" >
-          <mat-icon>delete</mat-icon>
-        </button>
-
-      </mat-card-actions>
     </mat-card>
   </div>
-</div>
+
   <mat-paginator
+    class="custom-paginator"
     [pageSizeOptions]="[6, 12, 18, 24]"
     aria-label="Select page of events"
-  ></mat-paginator>
-
+  >
+  </mat-paginator>
+</div>
