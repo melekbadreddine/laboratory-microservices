@@ -27,11 +27,6 @@ import { ConsulterMemberComponent } from '../consulter-member/consulter-member.c
 export class ToolsComponent implements AfterViewInit, OnInit, OnDestroy {
   obs!: Observable<any>;
   dataSource!: MatTableDataSource<Tool>;
-  // displayedColumns: string[] = [ "id",
-  // "nom",
-  // "date",
-  // "source",
-  // "createur"];
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
@@ -48,7 +43,6 @@ export class ToolsComponent implements AfterViewInit, OnInit, OnDestroy {
       this.dataSource = new MatTableDataSource(tools);
       this.obs = this.dataSource.connect();
 
-      // Move paginator initialization inside the subscription block
       if (this.dataSource) {
         this.dataSource.paginator = this.paginator;
         this.dataSource.sort = this.sort;
