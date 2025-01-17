@@ -40,19 +40,20 @@ export class DashboardComponent implements OnInit {
     }
   };
 
-  // Radar Chart for Roles
-  radarChartLabels: string[] = [];
-  radarChartData: ChartDataset[] = [
-    { data: [], label: 'Enseignants' },
-    { data: [], label: 'Étudiants' },
-  ];
-  radarChartOptions: ChartOptions = {
+  // Bar Chart for Roles (previously Radar Chart)
+  barChartRolesData: ChartDataset[] = [];
+  barChartRolesLabels: string[] = [];
+  barChartRolesOptions: ChartOptions = {
     ...this.commonOptions,
     scales: {
-      r: {
-        ticks: { stepSize: 1, precision: 0 },
+      y: {
+        beginAtZero: true,
+        grid: { display: true }
       },
-    },
+      x: {
+        grid: { display: false }
+      }
+    }
   };
 
   // Bar Chart for Event Trends
@@ -136,8 +137,8 @@ export class DashboardComponent implements OnInit {
     });
 
     this.MS.getNumberPerMemberGrade().subscribe((map) => {
-      this.radarChartLabels = Object.keys(map);
-      this.radarChartData[0].data = Object.values(map);
+      this.barChartRolesLabels = Object.keys(map); // Use labels for bar chart roles
+      this.barChartRolesData = [{ label: 'Rôles', data: Object.values(map) }]; // Data for bar chart
     });
 
     this.ES.getFullYearsEvents(2020, 2025).subscribe((events) => {
