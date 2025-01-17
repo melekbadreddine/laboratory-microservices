@@ -62,10 +62,11 @@
       </mat-card-content>
     </mat-card>
   </div>
-
   <!-- Charts -->
   <div class="charts-container">
     <!-- Row 1 -->
+
+    
     <div class="chart-row">
       <div class="chart-box">
         <div class="chart-title">Distribution des établissements</div>
@@ -89,6 +90,18 @@
             [options]="barChartRolesOptions">
           </canvas>
         </div>
+      </div>
+    </div>
+
+    <div class="chart-box">
+      <div class="chart-title">Répartition des membres</div>
+      <div class="chart-content">
+        <canvas baseChart
+          [type]="'bar'"
+          [datasets]="barChartMemberTypesData"
+          [labels]="barChartMemberTypesLabels"
+          [options]="commonOptions">
+        </canvas>
       </div>
     </div>
 

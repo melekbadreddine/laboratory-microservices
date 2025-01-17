@@ -15,6 +15,7 @@ import { MatChipsModule } from '@angular/material/chips';
   templateUrl: './consulter-invites.component.html',
   styleUrls: ['./consulter-invites.component.css'],
 })
+
 export class ConsulterInvitesComponent implements OnInit {
   members!: Member[];
 

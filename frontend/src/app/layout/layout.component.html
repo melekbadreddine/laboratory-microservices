@@ -1,9 +1,9 @@
 <!-- layout.component.html -->
 <mat-sidenav-container class="sidenav-container">
-  <mat-sidenav #drawer class="lab-sidenav" fixedInViewport="true" mode="over">
+  <mat-sidenav #drawer class="lab-sidenav" fixedInViewport="true" mode="side">
     <div class="sidenav-header">
-      <mat-icon class="lab-icon">science</mat-icon>
-      <span class="lab-title">LabManager</span>
+      <mat-icon class="lab-icon">dashboard</mat-icon>
+      <span class="lab-title">LabMaster</span>
     </div>
     <mat-nav-list>
       <a mat-list-item routerLink="/dashboard" routerLinkActive="active-link">
@@ -11,11 +11,11 @@
         <span>Dashboard</span>
       </a>
       <a mat-list-item routerLink="/members" routerLinkActive="active-link">
-        <mat-icon>groups</mat-icon>
+        <mat-icon>group</mat-icon>
         <span>Members</span>
       </a>
       <a mat-list-item routerLink="/tools" routerLinkActive="active-link">
-        <mat-icon>precision_manufacturing</mat-icon>
+        <mat-icon>settings</mat-icon>
         <span>Tools</span>
       </a>
       <a mat-list-item routerLink="/articles" routerLinkActive="active-link">
@@ -34,16 +34,16 @@
       <button mat-icon-button (click)="drawer.toggle()" class="menu-button">
         <mat-icon>menu</mat-icon>
       </button>
-      <span class="toolbar-title">LabManager</span>
+      <span class="toolbar-title">LabMaster</span>
       <span class="toolbar-spacer"></span>
-      
+
       <ng-container *ngIf="isAuth(); else noUserContent">
         <button [matMenuTriggerFor]="userMenu" mat-button class="user-profile-button">
           <img [src]="user.photoURL" alt="User avatar" class="user-avatar"/>
           <span class="username">{{user.displayName}}</span>
           <mat-icon>arrow_drop_down</mat-icon>
         </button>
-        
+
         <mat-menu #userMenu="matMenu" class="user-menu">
           <button mat-menu-item>
             <mat-icon>account_circle</mat-icon>
@@ -55,7 +55,7 @@
           </button>
         </mat-menu>
       </ng-container>
-      
+
       <ng-template #noUserContent>
         <button mat-raised-button class="login-button" routerLink="/login">
           Login

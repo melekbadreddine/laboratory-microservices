@@ -55,6 +55,7 @@ import { ConsulterInvitesComponent } from './consulter-invites/consulter-invites
 import {DragDropModule} from '@angular/cdk/drag-drop';
 import { ArticleCreateComponent } from './article-create/article-create.component';
 
+
 @NgModule({
   declarations: [
 
@@ -113,7 +114,7 @@ import { ArticleCreateComponent } from './article-create/article-create.componen
     MatSortModule,
     MatPaginatorModule,
     MatChipsModule,
-    DragDropModule
+    DragDropModule,
 
 
   ],

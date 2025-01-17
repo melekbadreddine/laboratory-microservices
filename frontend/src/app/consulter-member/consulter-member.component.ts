@@ -23,6 +23,7 @@ export class ConsulterMemberComponent implements OnInit {
   // Compare this snippet from src/app/consulter-member/consulter-member.component.ts:
   ngOnInit(): void {
     const toolId = this.data.toolId;
+    
 
     // Now you can use toolId to fetch the member
     this.MS.getMemberByOutil(toolId).subscribe((member) => {

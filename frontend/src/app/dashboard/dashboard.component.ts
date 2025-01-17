@@ -99,6 +99,11 @@ export class DashboardComponent implements OnInit {
     }
   };
 
+  barChartMemberTypesLabels: string[] = ['Etudiants', 'Enseignants'];
+  barChartMemberTypesData: ChartDataset[] = [
+  { data: [], label: 'Répartition des membres' },
+];
+
   // Horizontal Bar Chart for Member Diplomas
   horizontalBarChartData!: ChartDataset[];
   horizontalBarChartLabels: string[] = [];
@@ -129,38 +134,55 @@ export class DashboardComponent implements OnInit {
     this.TS.getTools().subscribe((tools) => (this.nb_tools = tools.length));
     this.ES.getEvenements().subscribe((events) => (this.nb_events = events.length));
     this.PS.getPublications().subscribe((pubs) => (this.nb_articles = pubs.length));
-
+  
     // Fetch data for charts
     this.MS.getNumberPerMemberEtablissement().subscribe((map) => {
       this.etablissementTypesLabel = Object.keys(map);
       this.etablissementTypeData = [{ label: 'Membres', data: Object.values(map) }];
     });
-
+  
     this.MS.getNumberPerMemberGrade().subscribe((map) => {
       this.barChartRolesLabels = Object.keys(map); // Use labels for bar chart roles
       this.barChartRolesData = [{ label: 'Rôles', data: Object.values(map) }]; // Data for bar chart
     });
-
+  
     this.ES.getFullYearsEvents(2020, 2025).subscribe((events) => {
       this.barChartData = [{ data: events, label: 'Évènements' }];
     });
-
+  
     this.MS.getNbPubMembers().subscribe((tab) => {
       this.chartData.push({ label: 'Articles', data: tab });
     });
-
+  
     this.MS.getNbOutilMembers().subscribe((tab) => {
       this.chartData.push({ label: 'Outils', data: tab });
     });
-
+  
     this.MS.getNumberPerMemberDiplome().subscribe((map) => {
       this.horizontalBarChartLabels = Object.keys(map);
       this.horizontalBarChartData = [{ label: 'Diplômes', data: Object.values(map) }];
     });
-
+  
     this.MS.getNumberPerMemberGrade().subscribe((map) => {
       this.doughnutChartLabels = Object.keys(map);
       this.doughnutChartData = [{ label: 'Grades', data: Object.values(map) }];
     });
+  
+    // Fetch data for Member Types (Etudiants vs Enseignants)
+    this.MS.getNumberPerMemberType().subscribe((mapRole) => {
+      console.log(mapRole); // Vérifiez si l'objet contient bien les données
+  
+      // Récupérer les valeurs de 'etudiant' et 'enseignant'
+      const etudiantValue = mapRole['etudiant'] || 0; // Si la clé 'etudiant' n'existe pas, affecter 0
+      const enseignantValue = mapRole['enseignant'] || 0; // Si la clé 'enseignant' n'existe pas, affecter 0
+  
+      // Remplir le bar chart avec les données des membres
+      this.barChartMemberTypesData = [
+        { 
+          label: 'Répartition des membres', 
+          data: [etudiantValue, enseignantValue] // Données pour le Bar Chart
+        }
+      ];
+    });
   }
-}
+}  
