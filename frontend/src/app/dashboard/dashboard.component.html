@@ -14,7 +14,7 @@
   </div>
 
   <div class="stats-container">
-    <mat-card class="stat-card members-card" color="accent">
+    <mat-card class="stat-card members-card" color="accent" [routerLink]="'/members'">
       <mat-card-header>
         <mat-card-title>Members</mat-card-title>
       </mat-card-header>
@@ -25,8 +25,12 @@
         </div>
       </mat-card-content>
     </mat-card>
+  
+  
 
-    <mat-card class="stat-card articles-card" color="accent">
+
+
+    <mat-card class="stat-card members-card" color="accent" [routerLink]="'/articles'">      
       <mat-card-header>
         <mat-card-title>Articles</mat-card-title>
       </mat-card-header>
@@ -38,7 +42,7 @@
       </mat-card-content>
     </mat-card>
 
-    <mat-card class="stat-card tools-card" color="accent">
+    <mat-card class="stat-card members-card" color="accent" [routerLink]="'/tools'">
       <mat-card-header>
         <mat-card-title>Tools</mat-card-title>
       </mat-card-header>
@@ -50,7 +54,7 @@
       </mat-card-content>
     </mat-card>
 
-    <mat-card class="stat-card events-card" color="accent">
+    <mat-card class="stat-card members-card" color="accent" [routerLink]="'/events'">
       <mat-card-header>
         <mat-card-title>Events</mat-card-title>
       </mat-card-header>

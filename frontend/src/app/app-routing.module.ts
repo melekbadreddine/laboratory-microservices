@@ -14,6 +14,7 @@ import { EtudiantFormComponent } from './etudiant-form/etudiant-form.component';
 import { AuthGuard } from 'src/services/auth-guard.service';
 
 const routes: Routes = [
+  
   {
     path: 'dashboard',
     pathMatch: 'full',
