@@ -5,7 +5,6 @@ import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
 
-import { Member } from 'src/models/member';
 import { Enseignant } from 'src/models/enseignant';
 import { Etudiant } from 'src/models/etudiant';
 import { MemberService } from 'src/services/member.service';
@@ -21,7 +20,7 @@ export class MemberComponent implements OnInit, AfterViewInit {
   enseignantSource!: MatTableDataSource<Enseignant>;
   etudiantSource!: MatTableDataSource<Etudiant>;
 
-  // Column definitions
+  
   enseignantColumns: string[] = [
     'cin',
     'nom',

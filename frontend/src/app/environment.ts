@@ -1,9 +1,9 @@
-// Your web app's Firebase configuration
 export const firebaseConfig = {
-  apiKey: 'AIzaSyCnvGKYixqDOGDGvqvv1ewktk9etLiZak8',
-  authDomain: 'spring-boot-microservice-53594.firebaseapp.com',
-  projectId: 'spring-boot-microservice-53594',
-  storageBucket: 'spring-boot-microservice-53594.appspot.com',
-  messagingSenderId: '976320271300',
-  appId: '1:976320271300:web:31ffd1b9e00c5234fd4a91',
+  apiKey: "AIzaSyCar2VifgPhOfJC6Vl2csnyEyCZYBy-ZOo",
+  authDomain: "projet-angular-s4.firebaseapp.com",
+  projectId: "projet-angular-s4",
+  storageBucket: "projet-angular-s4.firebasestorage.app",
+  messagingSenderId: "791661667973",
+  appId: "1:791661667973:web:fc93eecef58b681d0cebec",
+  measurementId: "G-QC7GKN1RQY"
 };

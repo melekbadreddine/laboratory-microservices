@@ -20,7 +20,7 @@ export class ConsulterMemberComponent implements OnInit {
     private MS: MemberService,
     private router: Router
   ) {}
-
+  // Compare this snippet from src/app/consulter-member/consulter-member.component.ts:
   ngOnInit(): void {
     const toolId = this.data.toolId;
 

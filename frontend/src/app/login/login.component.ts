@@ -3,6 +3,8 @@ import { Route, Router } from '@angular/router';
 import { interval } from 'rxjs';
 import { AuthService } from 'src/services/auth-service.service';
 
+
+//Login component
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
